@@ -168,18 +168,10 @@ const ReflectChatPage = () => {
                 if (e.key === "Enter") handleSend();
               }}
               className="flex-1 border px-4 py-2 rounded text-base focus:outline-none focus:ring-2 focus:ring-[#d4cec5] transition"
-              style={{
-                touchAction: "manipulation",
-                WebkitTapHighlightColor: "transparent",
-              }}
             />
             <button
               onClick={handleSend}
               className="bg-[#ece8e1] px-4 py-2 rounded shadow-sm hover:shadow text-base transition"
-              style={{
-                touchAction: "manipulation",
-                WebkitTapHighlightColor: "transparent",
-              }}
             >
               Reflect
             </button>
@@ -215,6 +207,9 @@ const ReflectChatPage = () => {
                 placeholder="Type your next thought..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSend();
+                }}
                 className="flex-1 border px-4 py-2 rounded"
               />
               <button

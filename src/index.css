@@ -12,6 +12,39 @@ code {
     monospace;
 } */
 
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+input:focus, button:focus {
+  outline: none;
+  transition: box-shadow 0.2s ease;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* // Add this global style in your CSS or Tailwind config */
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fade-in {
+  animation: fade-in 0.7s ease-out both;
+}
+
+@keyframes cloud-float {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animate-cloud-float {
+  background-size: 200% 200%;
+  animation: cloud-float 40s ease-in-out infinite;
+}

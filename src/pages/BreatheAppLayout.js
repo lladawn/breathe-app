@@ -1,5 +1,7 @@
 // Complete and corrected Breathe app with preserved pages and working private chat flow
 import React, { useState, useEffect } from "react";
+import { BreatheLandingPage } from "./LandingPage";
+import { PeerConnectionRoom } from "./PeerConnectionRoom";
 
 const pages = [
   { id: "home", label: "Home" },
@@ -11,18 +13,6 @@ const pages = [
   { id: "private-chat", label: "Private Chat" },
   { id: "volunteer", label: "Volunteer Room" },
 ];
-
-const BreatheLandingPage = () => (
-  <div className="p-10 text-center">
-    <h1 className="text-4xl font-serif font-semibold mb-4">Breathe.</h1>
-    <p className="text-lg text-[#5e5a55] mb-2">
-      A gentle corner of the digital world. For hearts that feel deeply.
-    </p>
-    <p className="text-base text-[#7c766f] italic">
-      A safe digital village for the emotional life.
-    </p>
-  </div>
-);
 
 const ReflectionPage = ({
   userInput,
@@ -198,96 +188,6 @@ const PrivateChatRoom = ({ partner }) => {
   );
 };
 
-const PeerConnectionRoom = ({ setMoments, setActivePage, setChatPartner }) => {
-  const [walkRequested, setWalkRequested] = useState(null);
-  const [acceptedWalks, setAcceptedWalks] = useState([]);
-  const sampleCards = [
-    {
-      id: 1,
-      alias: "Quiet Lantern",
-      reflection: "I’m learning to be okay with slow days.",
-      feeling: "Soft fatigue",
-    },
-    {
-      id: 2,
-      alias: "Willow Wind",
-      reflection: "I wish I knew how to stop overthinking.",
-      feeling: "Wistful",
-    },
-    {
-      id: 3,
-      alias: "Threadwalker",
-      reflection: "Some days I just miss someone I never got closure with.",
-      feeling: "Tender ache",
-    },
-  ];
-
-  const handleReaction = (card, type) => {
-    setMoments((prev) => [
-      ...prev,
-      { type, alias: card.alias, text: card.reflection },
-    ]);
-    if (type === "walk") {
-      setWalkRequested(card.id);
-      setTimeout(() => {
-        setAcceptedWalks((prev) => [...prev, card.id]);
-        setChatPartner(card.alias);
-        setActivePage("private-chat");
-      }, 2000);
-    }
-  };
-
-  return (
-    <div className="p-10 max-w-4xl mx-auto">
-      <h2 className="text-3xl font-serif font-semibold mb-6 text-center">
-        Peer Connection Room
-      </h2>
-      <p className="text-center text-gray-600 italic mb-8">
-        These are reflections from others feeling something like you. Choose
-        with kindness.
-      </p>
-      <div className="grid gap-6 sm:grid-cols-2">
-        {sampleCards.map((card) => (
-          <div
-            key={card.id}
-            className="bg-white border rounded-xl p-5 shadow-sm space-y-3"
-          >
-            <p className="text-gray-700 italic">“{card.reflection}”</p>
-            <div className="text-sm text-gray-500">
-              — {card.alias} · feeling: {card.feeling}
-            </div>
-            <div className="flex gap-2 flex-wrap">
-              <button
-                onClick={() => handleReaction(card, "relate")}
-                className="text-sm bg-gray-100 hover:bg-gray-200 rounded px-3 py-1"
-              >
-                ✨ Relate
-              </button>
-              <button
-                onClick={() => handleReaction(card, "warmth")}
-                className="text-sm bg-gray-100 hover:bg-gray-200 rounded px-3 py-1"
-              >
-                🌿 Send Warmth
-              </button>
-              <button
-                onClick={() => handleReaction(card, "walk")}
-                className="text-sm bg-[#ece8e1] hover:bg-[#e4e0d6] rounded px-3 py-1"
-              >
-                🤝 Walk Together
-              </button>
-            </div>
-            {walkRequested === card.id && !acceptedWalks.includes(card.id) && (
-              <div className="text-sm text-green-700 mt-2">
-                Waiting to see if they feel the same... 🌱
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
 const VolunteerRoom = ({ setActivePage, setChatPartner }) => {
   const volunteers = [
     {
@@ -403,7 +303,7 @@ export default function BreatheAppLayout() {
     if (isTransitioning) return <TransitionScreen onComplete={() => {}} />;
     switch (activePage) {
       case "home":
-        return <BreatheLandingPage />;
+        return <BreatheLandingPage setActivePage={setActivePage} />;
       case "reflect":
         return (
           <ReflectionPage
@@ -441,7 +341,7 @@ export default function BreatheAppLayout() {
           />
         );
       default:
-        return <BreatheLandingPage />;
+        return <BreatheLandingPage setActivePage={setActivePage} />;
     }
   };
 

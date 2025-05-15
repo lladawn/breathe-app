@@ -161,7 +161,7 @@ const ReflectChatPage = () => {
           <div className="w-full max-w-md flex flex-col sm:flex-row gap-2 z-10">
             <input
               type="text"
-              placeholder="Type your first thought..."
+              placeholder="Share your first thought gently..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
@@ -204,7 +204,7 @@ const ReflectChatPage = () => {
             <div className="flex gap-2 mt-4">
               <input
                 type="text"
-                placeholder="Type your next thought..."
+                placeholder="Keep sharing here, softly..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => {

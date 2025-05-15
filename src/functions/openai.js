@@ -21,30 +21,30 @@ export async function callOpenAI(messages) {
   }
 }
 
-export async function summarizeConversation(convo) {
-  try {
-    const summaryPrompt = [
-      {
-        role: "system",
-        content:
-          "Summarize this conversation in one warm, emotionally intelligent sentence that captures what the user is processing.",
-      },
-      ...convo,
-    ];
+// export async function summarizeConversation(convo) {
+//   try {
+//     const summaryPrompt = [
+//       {
+//         role: "system",
+//         content:
+//           "Summarize this conversation in one warm, emotionally intelligent sentence that captures what the user is processing.",
+//       },
+//       ...convo,
+//     ];
 
-    const summary = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: summaryPrompt,
-      temperature: 0.6,
-      max_tokens: 100,
-    });
+//     const summary = await openai.chat.completions.create({
+//       model: "gpt-4o-mini",
+//       messages: summaryPrompt,
+//       temperature: 0.6,
+//       max_tokens: 100,
+//     });
 
-    return summary.choices[0].message.content.trim();
-  } catch (err) {
-    console.error("Error creating summary:", err);
-    return "The user is reflecting deeply on something that matters to them.";
-  }
-}
+//     return summary.choices[0].message.content.trim();
+//   } catch (err) {
+//     console.error("Error creating summary:", err);
+//     return "The user is reflecting deeply on something that matters to them.";
+//   }
+// }
 
 export async function generateHighlight(convo) {
   console.log("generateHighlight convo: ", convo);
@@ -82,15 +82,15 @@ export async function generateDetailedSummary(convo) {
       {
         role: "system",
         content: `
-          Write a soft, emotionally intelligent reflection on this conversation — no more than 200–300 words, or less if the user spoke briefly.
+          Gently reflect on this emotional conversation. 
+          Keep it under 300 words — shorter if the user said little.
           
-          Capture the user's emotional journey, what they shared, their inner truths, and unspoken concerns with gentle understanding. 
-          Write as a quiet narrator observing their heart, something that is like them reading their old one — not to analyze or advise, but to witness and hold.
+          Capture the user's inner journey with warmth and quiet understanding.
+          Write like a thoughtful narrator — not to fix, but to witness.
           
-          End with a calm, kind insight or emotional truth. Not a solution. Just a soft lantern.
-          
-          It should read like a page from the user’s own soul — something they’ll cherish when they look back.
-          Do not create bullets, make it like a soft reading.
+          End with one soft insight — not advice, just a tender truth.
+
+          Let it feel like a page from their own soul.
             `.trim(),
       },
       ...convo,

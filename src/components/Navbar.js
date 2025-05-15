@@ -132,6 +132,9 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => (
           <Link to="/connect" onClick={() => setMenuOpen(false)}>
             🤝 Connect
           </Link>
+          <Link to="/savenote" onClick={() => setMenuOpen(false)}>
+            ✍️ Save a Note
+          </Link>
         </nav>
       </div>
     </div>

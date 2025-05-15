@@ -1,6 +1,9 @@
 // layouts/MainLayout.js
 import React, { useState } from "react";
-import { DesktopNav, MobileNav } from "../components/Navbar";
+import {
+  // DesktopNav,
+  MobileNav,
+} from "../components/Navbar";
 
 const MainLayout = ({ children }) => {
   const [menuOpen, setMenuOpen] = useState(false);

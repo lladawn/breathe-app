@@ -1,7 +1,6 @@
 // components/Navbar.js
 import React from "react";
 import { Link } from "react-router-dom";
-import LottieAnimation from "./LottieAnimation";
 
 export const DesktopNav = () => (
   <div className="hidden md:flex justify-center gap-10 text-[#5e5a55] absolute top-6 left-1/2 transform -translate-x-1/2 z-20 text-sm font-medium">

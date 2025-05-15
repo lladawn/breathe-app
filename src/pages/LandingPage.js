@@ -16,7 +16,7 @@ export const BreatheLandingPage = () => {
             A safe digital village for the emotional life.
           </p>
         </div>
-        <LottieAnimation animation={breathing} />
+        <LottieAnimation animation={breathing} scale={1.5} />
         <div className="text-lg sm:text-xl text-[#5e5a55] leading-loose space-y-3">
           <p>Hey there, welcome 🌿</p>
           <p>

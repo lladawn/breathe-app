@@ -48,3 +48,16 @@ input:focus, button:focus {
   background-size: 200% 200%;
   animation: cloud-float 40s ease-in-out infinite;
 }
+
+@keyframes breathing {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+.animate-breathing {
+  animation: breathing 4s ease-in-out infinite;
+}

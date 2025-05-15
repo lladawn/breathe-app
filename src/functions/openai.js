@@ -6,13 +6,13 @@ const openai = new OpenAI({
   dangerouslyAllowBrowser: true,
 });
 
-export async function callOpenAI(userInput, messages) {
+export async function callOpenAI(messages) {
   try {
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages,
       temperature: 0.7,
-      max_tokens: 100,
+      max_tokens: 100, // output tokens
     });
     return completion.choices[0].message.content.trim();
   } catch (err) {

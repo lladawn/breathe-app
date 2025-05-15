@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   callOpenAI,
-  summarizeConversation,
+  // summarizeConversation,
   generateHighlight,
   generateDetailedSummary,
 } from "../functions/openai.js";
@@ -46,18 +46,20 @@ const ReflectChatPage = () => {
     const newMessages = [...messages, { role: "user", content: userMessage }];
     setMessages(newMessages);
 
-    const contextSummary = localStorage.getItem("breatheContextSummary") || "";
     const systemPrompt = {
       role: "system",
       content:
-        `You are a kind, emotionally intelligent guide. \nReply in under 100 words.\nHere's some background: ` +
-        contextSummary,
+        "You are a warm and kind, emotionally intelligent guide. Reply in under 100 words.",
     };
 
-    const trimmedMessages = newMessages.slice(-6);
-    const finalMessages = [systemPrompt, ...trimmedMessages];
+    const finalMessages = [
+      systemPrompt,
+      ...newMessages
+        // .filter((m) => m.role === "user")
+        .slice(-4),
+    ];
 
-    const aiText = await callOpenAI(userMessage, finalMessages);
+    const aiText = await callOpenAI(finalMessages);
     const updatedMessages = [
       ...newMessages,
       { role: "assistant", content: aiText },
@@ -65,10 +67,10 @@ const ReflectChatPage = () => {
     setMessages(updatedMessages);
     setLoading(false);
 
-    if (updatedMessages.length % 6 === 0) {
-      const summaryText = await summarizeConversation(updatedMessages);
-      localStorage.setItem("breatheContextSummary", summaryText);
-    }
+    // if (updatedMessages.length % 4 === 0) {
+    //   const summaryText = await summarizeConversation(updatedMessages);
+    //   localStorage.setItem("breatheContextSummary", summaryText);
+    // }
   };
 
   const handleStartFresh = () => {

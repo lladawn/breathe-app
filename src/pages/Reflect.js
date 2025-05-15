@@ -88,7 +88,8 @@ const ReflectChatPage = () => {
   const handleSaveReflection = async () => {
     setSaving(true);
     const convoMessages = messages.filter(
-      (m) => m.role === "user" || m.role === "assistant"
+      (m) => m.role === "user"
+      //   || m.role === "assistant"
     );
 
     const highlight = await generateHighlight(convoMessages);

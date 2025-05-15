@@ -52,8 +52,9 @@ export async function generateHighlight(convo) {
     const summaryPrompt = [
       {
         role: "system",
-        content:
-          "Summarize this conversation in one warm, emotionally intelligent not more than 5-10 word sentence that captures what the user is processing, like a hightlight.",
+        content: `
+          A title (under 10 words) that captures the emotional essence of what the user is feeling or reflecting on. It should feel like a quiet headline — tender, true, and reflective. Avoid being generic. Use language that stirs emotion and invites memory.
+            `.trim(),
       },
       ...convo,
     ];
@@ -80,8 +81,17 @@ export async function generateDetailedSummary(convo) {
     const prompt = [
       {
         role: "system",
-        content:
-          "Write a summary in not more than 200-300 words of this emotional conversation in a calm and kind tone. Capture the user's emotional journey with care, what the user said, and what's a better way.",
+        content: `
+          Write a soft, emotionally intelligent reflection on this conversation — no more than 200–300 words, or less if the user spoke briefly.
+          
+          Capture the user's emotional journey, what they shared, their inner truths, and unspoken concerns with gentle understanding. 
+          Write as a quiet narrator observing their heart, something that is like them reading their old one — not to analyze or advise, but to witness and hold.
+          
+          End with a calm, kind insight or emotional truth. Not a solution. Just a soft lantern.
+          
+          It should read like a page from the user’s own soul — something they’ll cherish when they look back.
+          Do not create bullets, make it like a soft reading.
+            `.trim(),
       },
       ...convo,
     ];

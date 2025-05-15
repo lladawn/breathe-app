@@ -1,9 +1,12 @@
 // src/pages/HeartPage.js
 import React from "react";
+import LottieAnimation from "../components/LottieAnimation";
+import breathing from "../assets/animations/breathe.json";
 
 const HeartPage = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 py-16 bg-gradient-to-br from-[#f4f1eb] via-[#f0ede7] to-[#f9f7f3] text-[#3c3a37] animate-fade-in">
+      <LottieAnimation animation={breathing} scale={1.5} opacity={0.3} />
       <div className="max-w-2xl w-full text-center">
         <h1 className="text-3xl sm:text-5xl font-serif font-semibold mb-4">
           The Heart Behind Breathe

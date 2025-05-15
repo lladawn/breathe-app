@@ -13,12 +13,15 @@ const MainLayout = ({ children }) => {
       "
     >
       {/* Navbars */}
-      <DesktopNav />
+      {/* <DesktopNav /> */}
       <MobileNav menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
 
       {/* everything below the navbars */}
       <main className="flex-1 overflow-y-auto">
-        <div className="relative z-10 w-full max-w-3xl mx-auto px-4 pt-10 pb-20 animate-fade-in">
+        {/* pt-10 pb-20 */}
+        {/* py-6 sm:py-10  */}
+
+        <div className="relative min-h-screen z-10 w-full max-w-3xl mx-auto px-4 animate-fade-in flex items-center justify-center py-20">
           {children}
         </div>
       </main>

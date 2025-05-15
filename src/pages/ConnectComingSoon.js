@@ -5,7 +5,7 @@ import reflect from "../assets/animations/laying.json";
 
 const ConnectComingSoon = () => {
   return (
-    <div className="relative flex-1 bg-gradient-to-br from-[#f4f1eb] via-[#f0ede7] to-[#f9f7f3] overflow-hidden flex flex-col items-center justify-center px-4 py-10">
+    <div className="relative flex-1 bg-gradient-to-br from-[#f4f1eb] via-[#f0ede7] to-[#f9f7f3] overflow-hidden flex flex-col items-center justify-center px-4">
       <LottieAnimation animation={reflect} opacity={0.3} scale={1.5} />
       {/* Soft background animation */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,#ffffff40,transparent_70%)] bg-no-repeat bg-cover animate-cloud-float opacity-60 blur-2xl pointer-events-none" />

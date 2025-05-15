@@ -6,8 +6,12 @@ export const BreatheLandingPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="relative h-screen w-full overflow-x-hidden overflow-y-auto bg-gradient-to-br from-[#f4f1eb] via-[#f0ede7] to-[#f9f7f3] flex items-center justify-center">
-      <div className="relative z-10 max-w-3xl mx-auto animate-fade-in text-center px-4">
+    <div
+      // relative h-screen w-full overflow-x-hidden overflow-y-auto
+      // min-h-screen flex items-center justify-center -> for middle of the height
+      className="relative w-full overflow-hidden bg-gradient-to-br from-[#f4f1eb] via-[#f0ede7] to-[#f9f7f3] "
+    >
+      <div className="relative z-10 max-w-3xl mx-auto animate-fade-in text-center px-4 pb-20">
         <div className="mb-10">
           <h1 className="text-4xl sm:text-5xl font-['Playfair_Display'] font-semibold mb-2">
             Breathe.

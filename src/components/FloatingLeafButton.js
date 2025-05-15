@@ -1,14 +1,14 @@
 import React, { useRef, useState, useEffect } from "react";
 
 const FloatingLeafButton = ({ onClick }) => {
-  const [position, setPosition] = useState({ x: 20, y: 20 });
-  // const buttonSize = 60; // put this outside the component too if needed
-  // const margin = 20;
+  // const [position, setPosition] = useState({ x: 20, y: 20 });
+  const buttonSize = 60; // Size of your button
+  const margin = 20;
 
-  // const [position, setPosition] = useState(() => ({
-  //   x: window.innerWidth / 2 - buttonSize / 2,
-  //   y: window.innerHeight - buttonSize - margin,
-  // }));
+  const [position, setPosition] = useState(() => ({
+    x: window.innerWidth / 2 - buttonSize / 2,
+    y: margin,
+  }));
   const [isDragging, setIsDragging] = useState(false);
   const buttonRef = useRef(null);
 
@@ -18,7 +18,7 @@ const FloatingLeafButton = ({ onClick }) => {
     };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [position]);
 
   // const cornerMargin = 20;
 

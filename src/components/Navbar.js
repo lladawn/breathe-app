@@ -5,7 +5,13 @@ import FloatingLeafButton from "./FloatingLeafButton";
 // import LottieAnimation from "./LottieAnimation";
 
 export const DesktopNav = () => (
-  <div className="hidden md:flex justify-center gap-10 text-[#5e5a55] absolute top-6 left-1/2 transform -translate-x-1/2 z-20 text-sm font-medium">
+  <div
+    // className="hidden md:flex justify-center gap-10 text-[#5e5a55]
+    // absolute top-6 left-1/2
+    // transform -translate-x-1/2 z-20 text-sm font-medium"
+    className="flex items-center justify-center gap-10 text-[#5e5a55] 
+    text-sm font-medium mt-6"
+  >
     {/* <div className="hidden md:flex fixed gap-10 top-0 left-1/2 transform -translate-x-1/2 z-40 bg-[#f8f5f0]/70 backdrop-blur-md px-6 py-3 rounded-b-xl shadow-md"> */}{" "}
     <Link to="/" className="hover:text-[#3c3a37] transition">
       Home
@@ -94,13 +100,15 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => (
       🌿
     </button> */}
 
-    <FloatingLeafButton onClick={() => setMenuOpen(true)} />
+    <FloatingLeafButton onClick={() => setMenuOpen((prev) => !prev)} />
 
     {/* Bottom sheet menu */}
     <div
-      className={`fixed bottom-0 left-0 w-full bg-white rounded-t-3xl shadow-2xl transition-transform duration-300 ease-in-out z-50 ${
-        menuOpen ? "translate-y-0" : "translate-y-full"
-      }`}
+      className={`fixed bottom-0 left-0 w-full bg-white rounded-t-3xl shadow-2xl 
+        transition-transform duration-300 ease-in-out z-50 
+        bg-gradient-to-br from-[#f0ede7] via-[#e8e4de] to-[#f7f4ef] ${
+          menuOpen ? "translate-y-0" : "translate-y-full"
+        }`}
     >
       <div className="p-6">
         <div className="flex justify-end">

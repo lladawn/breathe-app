@@ -132,10 +132,24 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => (
           <Link to="/connect" onClick={() => setMenuOpen(false)}>
             🤝 Connect
           </Link>
-          <Link to="/savenote" onClick={() => setMenuOpen(false)}>
+          <Link to="/saveanote" onClick={() => setMenuOpen(false)}>
             ✍️ Save a Note
           </Link>
         </nav>
+
+        <div className="mt-auto pt-10 text-sm text-[#a39f97] text-center">
+          {/* Made with ☁️ by Breathe */}
+          <Link
+            to="/heart"
+            onClick={() => setMenuOpen(false)}
+            // className="underline"
+            // className="italic text-[#7c766f] hover:text-[#3c3a37] transition"
+          >
+            Made with 🤍 by
+            <span className="italic"> </span>
+            <span className="underline">The Open Thread</span>
+          </Link>
+        </div>
       </div>
     </div>
   </>

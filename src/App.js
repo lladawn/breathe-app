@@ -8,6 +8,7 @@ import Reflect from "./pages/Reflect.js";
 import ArchivePage from "./pages/Archive.js";
 import ConnectPage from "./pages/ConnectComingSoon.js";
 import SaveNotePage from "./pages/SaveNote.js";
+import HeartPage from "./pages/HeartPage.js";
 // import fallingLeaves from "./assets/animations/falling-leaves.json";
 
 export default function App() {
@@ -19,9 +20,10 @@ export default function App() {
         <Routes>
           <Route path="/" element={<BreatheLandingPage />} />
           <Route path="/reflect" element={<Reflect />} />
-          <Route path="/savenote" element={<SaveNotePage />} />
+          <Route path="/saveanote" element={<SaveNotePage />} />
           <Route path="/archive" element={<ArchivePage />} />
           <Route path="/connect" element={<ConnectPage />} />
+          <Route path="/heart" element={<HeartPage />} />
         </Routes>
       </MainLayout>
     </Router>

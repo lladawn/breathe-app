@@ -6,6 +6,11 @@
       "src": "logo-rounded.png",
       "type": "image/png",
       "sizes": "512x512"
+    },
+    {
+      "src": "preview.png",
+      "type": "image/png",
+      "sizes": "1200x630"
     }
   ],
   "start_url": ".",

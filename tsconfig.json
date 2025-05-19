@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+      "target": "ESNext",
+      "module": "ESNext",
+      "lib": ["DOM", "ESNext"],
+      "moduleResolution": "Node",
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "strict": true,
+      "baseUrl": ".",
+      "paths": {
+        "@types/*": ["packages/types/*"],
+        "@utils/*": ["packages/utils/*"]
+      }
+    },
+    "exclude": ["node_modules", "dist", "build"]
+  }

@@ -34,7 +34,7 @@ export const BreatheLandingPage = () => {
         </div>
         <div className="mt-10 flex justify-center">
           <button
-            onClick={() => navigate("/reflect")}
+            onClick={() => navigate("/storybook")}
             className="bg-[#ece8e1] hover:bg-[#e2ded7] text-[#3c3a37] font-medium px-6 py-2 rounded-md transition shadow-sm hover:shadow-md"
           >
             Begin quietly →

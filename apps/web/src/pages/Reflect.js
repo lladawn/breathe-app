@@ -1,8 +1,6 @@
-// src/pages/ReflectChatPage.js
 import React, { useState, useEffect, useRef } from "react";
 import {
   callOpenAI,
-  // summarizeConversation,
   generateHighlight,
   generateDetailedSummary,
 } from "../functions/openai.js";
@@ -10,15 +8,17 @@ import LottieAnimation from "../components/LottieAnimation.js";
 import reflect from "../assets/animations/reflect.json";
 import reflecting from "../assets/animations/reflect.json";
 import { ReflectHeading } from "../components/ReflectHeading.js";
+import { useNavigate } from "react-router-dom";
 
 const ReflectChatPage = () => {
+  const navigate = useNavigate();
+
   const [messages, setMessages] = useState(() => {
     return (
       JSON.parse(localStorage.getItem("breatheChatHistory")) || [
         {
           role: "assistant",
-          content:
-            "Hey there 🌿 What’s been building up inside? I’m here to hold it with you.",
+          content: "Let's open up...",
         },
       ]
     );
@@ -53,12 +53,7 @@ const ReflectChatPage = () => {
         "You are a warm and kind, emotionally intelligent guide. Reply in under 100 words.",
     };
 
-    const finalMessages = [
-      systemPrompt,
-      ...newMessages
-        // .filter((m) => m.role === "user")
-        .slice(-4),
-    ];
+    const finalMessages = [systemPrompt, ...newMessages.slice(-4)];
 
     const aiText = await callOpenAI(finalMessages);
     const updatedMessages = [
@@ -67,19 +62,13 @@ const ReflectChatPage = () => {
     ];
     setMessages(updatedMessages);
     setLoading(false);
-
-    // if (updatedMessages.length % 4 === 0) {
-    //   const summaryText = await summarizeConversation(updatedMessages);
-    //   localStorage.setItem("breatheContextSummary", summaryText);
-    // }
   };
 
   const handleStartFresh = () => {
     const freshStart = [
       {
         role: "assistant",
-        content:
-          "Hey there 🌿 What’s been building up inside? I’m here to hold it with you.",
+        content: "Let's open up...",
       },
     ];
     setMessages(freshStart);
@@ -90,10 +79,7 @@ const ReflectChatPage = () => {
 
   const handleSaveReflection = async () => {
     setSaving(true);
-    const convoMessages = messages.filter(
-      (m) => m.role === "user"
-      //   || m.role === "assistant"
-    );
+    const convoMessages = messages.filter((m) => m.role === "user");
 
     const highlight = await generateHighlight(convoMessages);
     const aiSummary = await generateDetailedSummary(convoMessages);
@@ -115,14 +101,10 @@ const ReflectChatPage = () => {
   };
 
   return (
-    <div className="flex flex-col max-w-2xl mx-auto px-4">
+    <div className="flex flex-col max-w-2xl mx-auto px-2">
+      {/* Top Buttons */}
       <div className="flex flex-col justify-between items-center mb-4 flex-wrap gap-4">
-        {/* <h2 className="text-xl sm:text-2xl font-serif text-center w-full sm:w-auto flex-1 ">
-          Reflect — A quiet conversation
-        </h2> */}
-
         <ReflectHeading />
-
         {hasStarted && (
           <div className="flex gap-2">
             <button
@@ -144,50 +126,13 @@ const ReflectChatPage = () => {
         )}
       </div>
 
-      {!hasStarted ? (
-        <div className="flex-1 flex flex-col items-center justify-center space-y-6 py-8">
-          <div className="text-center text-gray-600 italic text-lg max-w-md">
-            Hey there 🌿 <br /> What’s been building up inside?
-          </div>
-          {/* <div className="w-full max-w-md flex gap-2">
-            <input
-              type="text"
-              placeholder="Type your first thought..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              className="flex-1 border px-4 py-2 rounded"
-            />
-            <button
-              onClick={handleSend}
-              className="bg-[#ece8e1] px-4 py-2 rounded shadow-sm hover:shadow"
-            >
-              Reflect
-            </button>
-          </div> */}
-          <div className="w-full max-w-md flex flex-col sm:flex-row gap-2 z-10">
-            <input
-              type="text"
-              placeholder="Share your first thought..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") handleSend();
-              }}
-              className="flex-1 border px-4 py-2 rounded text-base focus:outline-none focus:ring-2 focus:ring-[#d4cec5] transition"
-            />
-            <button
-              onClick={handleSend}
-              className="bg-[#ece8e1] px-4 py-2 rounded shadow-sm hover:shadow text-base transition"
-            >
-              Reflect
-            </button>
-          </div>
-          <LottieAnimation animation={reflect} opacity={0.3} />
-        </div>
-      ) : (
+      {/* Conditional Content */}
+      {hasStarted ? (
         <>
-          <div className="flex flex-col h-30 overflow-y-auto">
-            <div className="flex-1 overflow-y-auto space-y-4 pb-4 py-10">
+          {/* Chat Container */}
+          <div className="flex-1 flex flex-col border rounded-lg bg-white shadow-sm overflow-hidden">
+            {/* Scrollable Messages */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 max-h-[45vh]">
               {messages.map((msg, idx) => (
                 <div
                   key={idx}
@@ -207,7 +152,9 @@ const ReflectChatPage = () => {
               )}
               <div ref={endRef} />
             </div>
-            <div className="flex gap-2 mt-4">
+
+            {/* Input Field */}
+            <div className="flex gap-2 border-t p-4 bg-[#f9f7f3]">
               <input
                 type="text"
                 placeholder="Keep sharing here, softly..."
@@ -228,7 +175,43 @@ const ReflectChatPage = () => {
             </div>
           </div>
         </>
+      ) : (
+        // Welcome Section
+        <div className="flex-1 flex flex-col items-center justify-center space-y-6 py-8">
+          <div className="text-center text-gray-600 italic text-lg max-w-md">
+            Let's open up...
+          </div>
+          <div className="w-full max-w-md flex flex-col sm:flex-row gap-2">
+            <input
+              type="text"
+              placeholder="Share your first thought..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSend();
+              }}
+              className="flex-1 border px-4 py-2 rounded text-base focus:outline-none focus:ring-2 focus:ring-[#d4cec5] transition"
+            />
+            <button
+              onClick={handleSend}
+              className="bg-[#ece8e1] px-4 py-2 rounded shadow-sm hover:shadow text-base transition"
+            >
+              Reflect
+            </button>
+          </div>
+          <LottieAnimation animation={reflect} opacity={0.3} />
+        </div>
       )}
+
+      {/* Back to Storybook Button */}
+      <div className="mt-6 flex justify-center">
+        <button
+          onClick={() => navigate("/storybook")}
+          className="bg-[#f1ece4] hover:bg-[#e7e2db] text-[#3c3a37] font-medium px-6 py-2 rounded-md transition shadow-sm hover:shadow-md"
+        >
+          👈 Take me back to the story
+        </button>
+      </div>
     </div>
   );
 };

@@ -52,15 +52,30 @@ const ArchivePage = () => {
             {entries.map((entry, idx) => (
               <li
                 key={idx}
-                className="bg-white border border-gray-200 rounded-lg shadow p-4"
+                className="bg-white border border-gray-200 rounded-lg shadow p-4 "
               >
                 <p className="text-sm text-gray-500 mb-1">
                   {new Date(entry.date).toLocaleString()}
                 </p>
                 <p className="text-gray-800 mb-2">{entry.highlight}</p>
-                <p className="text-gray-700 whitespace-pre-line">
-                  {entry.aiSummary}
-                </p>
+                {/* Scrollable content */}
+                <div
+                  className="max-h-[35vh] overflow-y-auto
+                            px-2 py-1
+                            rounded-lg 
+                            shadow-inner
+                            transition-all"
+                  style={{
+                    scrollbarWidth: "none", // Firefox
+                    msOverflowStyle: "none", // IE 10+
+                    boxShadow: "inset 0 -20px 20px -20px rgba(0,0,0,0.1)", // subtle fade at bottom
+                  }}
+                >
+                  <p className="text-gray-700 whitespace-pre-line">
+                    {entry.aiSummary}
+                  </p>
+                </div>
+
                 <div className="mt-3 flex justify-between text-sm">
                   <button
                     onClick={() => exportEntry(entry)}

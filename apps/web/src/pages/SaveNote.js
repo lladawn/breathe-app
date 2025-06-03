@@ -68,7 +68,13 @@ const SaveNotePage = () => {
       </div>
 
       <h3 className="text-lg font-medium text-[#5e5a55] mb-3">Your Notes</h3>
-      <ul className="space-y-4">
+      <ul
+        className="space-y-4 max-h-[32vh] overflow-y-auto"
+        style={{
+          scrollbarWidth: "none", // Firefox
+          msOverflowStyle: "none", // IE 10+
+        }}
+      >
         {notes.map((note, idx) => (
           <li
             key={idx}

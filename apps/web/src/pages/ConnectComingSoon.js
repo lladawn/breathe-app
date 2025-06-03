@@ -2,8 +2,10 @@
 import React from "react";
 import LottieAnimation from "../components/LottieAnimation";
 import reflect from "../assets/animations/laying.json";
+import { useNavigate } from "react-router-dom";
 
 const ConnectComingSoon = () => {
+  const navigate = useNavigate();
   return (
     <div className="relative flex-1 bg-gradient-to-br from-[#f4f1eb] via-[#f0ede7] to-[#f9f7f3] overflow-hidden flex flex-col items-center justify-center px-4">
       <LottieAnimation animation={reflect} opacity={0.3} scale={1.5} />
@@ -34,6 +36,14 @@ const ConnectComingSoon = () => {
         <p className="mt-10 text-sm text-gray-400">
           Feature under mindful construction ✨
         </p>
+      </div>
+      <div className="mt-16 flex justify-center">
+        <button
+          onClick={() => navigate("/storybook")}
+          className="bg-[#f1ece4] hover:bg-[#e7e2db] text-[#3c3a37] font-medium px-6 py-2 rounded-md transition shadow-sm hover:shadow-md"
+        >
+          👈 Take me back to the story
+        </button>
       </div>
     </div>
   );

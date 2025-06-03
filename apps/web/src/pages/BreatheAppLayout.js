@@ -1,6 +1,6 @@
 // Complete and corrected Breathe app with preserved pages and working private chat flow
 import React, { useState, useEffect } from "react";
-import { BreatheLandingPage } from "./LandingPage";
+import { BreatheLandingPage } from "./OldLandingPage";
 import { PeerConnectionRoom } from "./PeerConnectionRoom";
 
 const pages = [

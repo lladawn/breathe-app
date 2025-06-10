@@ -11,6 +11,7 @@ import reflecting from "../assets/animations/reflect.json";
 import { ReflectHeading } from "../components/ReflectHeading.js";
 import { useNavigate } from "react-router-dom";
 import { createReflection } from "../functions/api"; // Import your createReflection function
+import ShareReflectionModal from "../components/ShareReflectionModal.tsx";
 
 const ReflectChatPage = () => {
   const navigate = useNavigate();
@@ -260,99 +261,13 @@ const ReflectChatPage = () => {
       </div>
 
       {/* Share Modal */}
-      {showShareModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-lg">
-            <h2 className="text-xl font-semibold mb-4 text-center">
-              🌿 Share with Peers
-            </h2>
-
-            {/* Reflection Text */}
-            <textarea
-              value={reflectionMetadata.reflection}
-              onChange={(e) =>
-                setReflectionMetadata((prev) => ({
-                  ...prev,
-                  reflection: e.target.value,
-                }))
-              }
-              rows={4}
-              className="w-full border px-3 py-2 rounded mb-4"
-              placeholder="Write a note from your reflection or your heart..."
-            />
-
-            {/* Alias */}
-            <label className="text-sm font-semibold mb-1 block">Alias:</label>
-            <input
-              type="text"
-              value={reflectionMetadata.alias}
-              onChange={(e) =>
-                setReflectionMetadata((prev) => ({
-                  ...prev,
-                  alias: e.target.value,
-                }))
-              }
-              className="w-full border px-3 py-2 rounded mb-4"
-              placeholder="Choose an alias that feels right..."
-            />
-
-            {/* Feeling */}
-            <label className="text-sm font-semibold mb-1 block">Feeling:</label>
-            <input
-              type="text"
-              value={reflectionMetadata.feeling}
-              onChange={(e) =>
-                setReflectionMetadata((prev) => ({
-                  ...prev,
-                  feeling: e.target.value,
-                }))
-              }
-              className="w-full border px-3 py-2 rounded mb-4"
-              placeholder="How do you feel in one phrase?"
-            />
-
-            {/* Tags */}
-            <label className="text-sm font-semibold mb-1 block">Tags:</label>
-            <input
-              type="text"
-              value={reflectionMetadata.tags.join(", ")}
-              onChange={(e) =>
-                setReflectionMetadata((prev) => ({
-                  ...prev,
-                  tags: e.target.value
-                    .split(",")
-                    .map((tag) => tag.trim())
-                    .filter((tag) => tag),
-                }))
-              }
-              className="w-full border px-3 py-2 rounded mb-4"
-              placeholder="e.g. pause, breathe, growth"
-            />
-
-            {/* Note */}
-            <p className="text-sm text-gray-500 italic mb-4">
-              Offer a small piece of your reflection, or a gentle note from your
-              heart. Let it breathe softly, without trying too hard.
-            </p>
-
-            {/* Buttons */}
-            <div className="flex justify-end gap-2">
-              <button
-                onClick={() => setShowShareModal(false)}
-                className="px-4 py-2 text-sm rounded bg-gray-200 hover:bg-gray-300 transition"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleShareSubmit}
-                className="px-4 py-2 text-sm rounded bg-[#ece8e1] hover:bg-[#e7e2db] transition"
-              >
-                Share with Peers
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ShareReflectionModal
+        isOpen={showShareModal}
+        onClose={() => setShowShareModal(false)}
+        onSubmit={handleShareSubmit}
+        reflectionMetadata={reflectionMetadata}
+        setReflectionMetadata={setReflectionMetadata}
+      />
     </div>
   );
 };

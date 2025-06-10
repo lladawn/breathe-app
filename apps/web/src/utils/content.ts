@@ -45,7 +45,7 @@ You can reach out, if you feel moved.
 A simple warmth. A gentle “me too.”`,
     cta: "Enter Peer Room",
     undernote: "Peer reflections with warmth, relate, or walk options.",
-    onClick: () => navigate("/connect"),
+    onClick: () => navigate("/connect?section=peer-reflections"),
   },
   {
     id: "walk-together",
@@ -60,7 +60,7 @@ When you’re ready, send the invitation.
 Let’s walk together.`,
     cta: "Send a Walk Request",
     undernote: "Connect to a fellow breather for a slow walk conversation.",
-    onClick: () => navigate("/connect?category=walks"),
+    onClick: () => navigate("/connect?section=walk-together"),
   },
   {
     id: "letting-go",
@@ -86,7 +86,7 @@ Let what’s real rest gently inside you.
 As breathers, we let go. We learn. We keep moving—gently.`,
     cta: "Let Go",
     undernote: "Ending or archiving reflections, ephemeral moments.",
-    onClick: () => navigate("/archive"),
+    onClick: () => navigate("/connect?section=your-reflections"),
   },
   {
     id: "depth-mode",

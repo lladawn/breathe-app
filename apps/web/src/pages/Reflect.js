@@ -39,6 +39,7 @@ const ReflectChatPage = () => {
     feeling: "",
     tags: [],
   });
+  const [loadingMetadata, setLoadingMetadata] = useState(false);
 
   const endRef = useRef(null);
 
@@ -114,9 +115,12 @@ const ReflectChatPage = () => {
 
   const handleShareWithPeers = async () => {
     const convoMessages = messages.filter((m) => m.role === "user");
+    setShowShareModal(true);
+    setLoadingMetadata(true);
     const metadata = await generateMetadataFromReflection(convoMessages);
     setReflectionMetadata(metadata);
-    setShowShareModal(true);
+    setLoadingMetadata(false);
+    // setShowShareModal(true);
   };
 
   const handleShareSubmit = async () => {
@@ -137,7 +141,7 @@ const ReflectChatPage = () => {
       navigate("/connect?section=your-reflections"); // Navigate to Peer Room -- Your Reflections section
     } catch (error) {
       console.error("Error sharing reflection:", error);
-      alert(`Failed to share reflection. Please try again. ${error}`);
+      alert(`Failed to share reflection. Please try again.`);
     }
   };
 
@@ -267,6 +271,7 @@ const ReflectChatPage = () => {
         onSubmit={handleShareSubmit}
         reflectionMetadata={reflectionMetadata}
         setReflectionMetadata={setReflectionMetadata}
+        loadingMetadata={loadingMetadata}
       />
     </div>
   );

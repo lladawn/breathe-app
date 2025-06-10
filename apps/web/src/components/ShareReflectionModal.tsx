@@ -13,6 +13,7 @@ const ShareReflectionModal = ({
   onSubmit,
   reflectionMetadata,
   setReflectionMetadata,
+  loadingMetadata = false
 }) => {
   const [newTag, setNewTag] = useState("");
   const [tagColors, setTagColors] = useState({});
@@ -34,6 +35,16 @@ const ShareReflectionModal = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
       <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-lg relative">
+        {loadingMetadata && (
+          <div className="absolute inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50 rounded-2xl">
+            <div className="text-center flex flex-col items-center justify-items">
+              <div className="text-[#5e5a55] text-sm mb-2">Generating metadata from your reflection..  </div>
+              <div className="text-[#5e5a55] text-sm mb-2">Please wait...</div>
+              <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-[#d4cec5] border-opacity-70"></div>
+            </div>
+          </div>
+        )}
+
         <h2 className="text-xl font-semibold mb-4 text-center">
           🌿 Share with Peers
         </h2>

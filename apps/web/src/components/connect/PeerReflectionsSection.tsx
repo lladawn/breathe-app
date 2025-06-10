@@ -24,6 +24,10 @@ const PeerReflectionsSection = ({
                 </p>
                 {loadingPeerReflections ? (
                     <p className="italic text-gray-500">Loading...</p>
+                ) : peerReflections.length === 0 ? (
+                    <>
+                        <p className="italic text-gray-500 mt-5">No one took the courage to share yet. </p>
+                    </>
                 ) : (
                     <div className="flex flex-col gap-4">
                         {peerReflections.map((reflection) => (

@@ -43,6 +43,10 @@ const YourReflectionsSection = ({
 
             {loadingReflections ? (
                 <p className="italic text-gray-500">Loading...</p>
+            ) : yourReflections.length === 0 ? (
+                <>
+                    <p className="italic text-gray-500 mt-5">You haven't shared any reflections yet. </p>
+                </>
             ) : (
                 <div className="flex flex-col gap-4">
                     {yourReflections.map((reflection) => (

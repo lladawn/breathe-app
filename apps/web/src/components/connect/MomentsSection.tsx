@@ -14,7 +14,7 @@ const MomentsSection = ({ moments, loadingMoments }) => {
                 {loadingMoments ? (
                     <p className="italic text-gray-500">Loading moments...</p>
                 ) : moments.length === 0 ? (
-                    <p className="italic text-gray-500">No moments yet. 🌱</p>
+                    <p className="italic text-gray-500 mt-5">Some moments take time.</p>
                 ) : (
                     moments.map((moment) => {
                         const timeAgo = getApproxTimeAgo(moment.timestamp);

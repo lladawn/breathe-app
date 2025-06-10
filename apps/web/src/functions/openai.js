@@ -111,3 +111,63 @@ export async function generateDetailedSummary(convo) {
     return "A heartfelt emotional conversation about something deeply personal.";
   }
 }
+
+export async function generateMetadataFromReflection(convo) {
+  console.log("generateMetadataFromReflection convo: ", convo);
+  try {
+    const summaryPrompt = [
+      {
+        role: "system",
+        content: `
+You are a warm and mindful assistant. Given the following reflection conversation, please:
+1. Extract the main reflection content from the user (summarize if needed, capturing the core feeling in a warm, natural tone).
+2. Suggest an alias that captures the spirit of the reflection (e.g. 'Gentle Seeker' or 'Quiet Walker').
+3. Write a short feeling or summary (one phrase).
+4. Suggest 3–5 tags that are meaningful to the reflection (e.g. 'pause', 'breathe', 'growth').
+
+Please respond in this JSON format:
+{
+  "reflection": "",
+  "alias": "",
+  "feeling": "",
+  "tags": []
+}
+        `.trim(),
+      },
+      ...convo,
+    ];
+
+    const summary = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: summaryPrompt,
+      temperature: 0.6,
+      max_tokens: 200,
+    });
+
+    const raw = summary.choices[0].message.content.trim();
+    console.log("generateMetadataFromReflection raw: ", raw);
+
+    let metadata;
+    try {
+      metadata = JSON.parse(raw);
+    } catch (parseError) {
+      console.error("Error parsing AI response as JSON:", parseError);
+      metadata = {
+        reflection: "",
+        alias: "Gentle Breather",
+        feeling: "Quiet Reflection",
+        tags: ["pause", "breathe"],
+      };
+    }
+
+    return metadata;
+  } catch (err) {
+    console.error("Error generating metadata from reflection:", err);
+    return {
+      reflection: "",
+      alias: "Gentle Breather",
+      feeling: "Quiet Reflection",
+      tags: ["pause", "breathe"],
+    };
+  }
+}

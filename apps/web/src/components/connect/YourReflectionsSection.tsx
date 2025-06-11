@@ -8,10 +8,15 @@ const YourReflectionsSection = ({
     setShowRawReflectionModal,
     reflectionMetadata,
     setReflectionMetadata,
-    handleRawReflectionSubmit
+    handleRawReflectionSubmit,
+    submittingReflection
 }) => {
     return (
-        <section id="your-reflections" className="flex-shrink-0 w-full max-w-xs snap-center flex flex-col items-center">
+        <section id="your-reflections"
+            // className="flex-shrink-0 w-full max-w-xs snap-center flex flex-col items-center"
+            className="snap-center w-screen flex-shrink-0 overflow-y-auto h-full px-4 py-6 max-w-[500px] 
+            flex flex-col items-center"
+        >
             <h2 className="text-2xl font-semibold mb-4 text-center">
                 Your Reflections
             </h2>
@@ -37,6 +42,7 @@ const YourReflectionsSection = ({
                 isOpen={showRawReflectionModal}
                 onClose={() => setShowRawReflectionModal(false)}
                 onSubmit={handleRawReflectionSubmit}
+                submitting={submittingReflection}
                 reflectionMetadata={reflectionMetadata}
                 setReflectionMetadata={setReflectionMetadata}
             />
@@ -48,16 +54,21 @@ const YourReflectionsSection = ({
                     <p className="italic text-gray-500 mt-5">You haven't shared any reflections yet. </p>
                 </>
             ) : (
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-0">
                     {yourReflections.map((reflection) => (
                         <div
                             key={reflection.id}
-                            className="bg-[#fff9f3] rounded-2xl p-4 shadow-md border border-[#e4dfd8] hover:shadow-lg transition"
+                            className="bg-[#fff9f3] rounded-2xl p-4 shadow-md border border-[#e4dfd8] hover:shadow-lg transition mb-5"
                         >
                             <p className="text-base leading-relaxed mb-2">
                                 {reflection.reflection}
                             </p>
-                            <p className="text-sm italic text-gray-500 mb-2">
+                            {reflection.alias && (
+                                <p className="text-xs italic text-gray-500 mb-2">
+                                    — {reflection.alias}
+                                </p>
+                            )}
+                            <p className="text-sm italic text-gray-500 mb-3">
                                 Feeling: {reflection.feeling}
                             </p>
                             <div className="flex flex-wrap gap-2">

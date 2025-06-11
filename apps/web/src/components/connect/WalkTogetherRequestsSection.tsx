@@ -2,7 +2,11 @@ import React from "react";
 
 const WalkTogetherRequestsSection = () => {
     return (
-        <section id="walk-together" className="flex-shrink-0 w-full max-w-xs snap-center flex flex-col items-center">
+        <section id="walk-together"
+            // className="flex-shrink-0 w-full max-w-xs snap-center flex flex-col items-center"
+            className="snap-center w-screen flex-shrink-0 overflow-y-auto h-full px-4 py-6 max-w-[500px] flex 
+            flex-col items-center"
+        >
             <h2 className="text-2xl font-semibold mb-4 text-center">
                 Walk Together Requests
             </h2>

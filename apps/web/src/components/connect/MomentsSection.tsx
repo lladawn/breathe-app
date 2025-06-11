@@ -3,14 +3,18 @@ import { getApproxTimeAgo } from "../../utils";
 
 const MomentsSection = ({ moments, loadingMoments }) => {
     return (
-        <section id="moments" className="flex-shrink-0 w-full max-w-xs snap-center flex flex-col items-center">
+        <section id="moments"
+            // className="flex-shrink-0 w-full max-w-xs snap-center flex flex-col items-center"
+            className="snap-center w-screen flex-shrink-0 overflow-y-auto h-full px-4 py-6 max-w-[500px] 
+            flex flex-col items-center"
+        >
             <h2 className="text-2xl font-semibold mb-4 text-center">
                 Moments
             </h2>
             <p className="italic text-sm text-center text-[#6e6861] mb-4">
                 “A moment shared can't be undone, or wiped out, only fades or embraces with time.” 🌱
             </p>
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-0">
                 {loadingMoments ? (
                     <p className="italic text-gray-500">Loading moments...</p>
                 ) : moments.length === 0 ? (
@@ -39,7 +43,7 @@ const MomentsSection = ({ moments, loadingMoments }) => {
                         return (
                             <div
                                 key={moment._id}
-                                className="bg-[#fff9f3] rounded-2xl p-6 shadow-md border border-[#e4dfd8] hover:shadow-lg transition"
+                                className="bg-[#fff9f3] rounded-2xl p-6 shadow-md border border-[#e4dfd8] hover:shadow-lg transition min-w-[320px] mb-5"
                             >
                                 <p className="text-base leading-relaxed text-center mb-2">
                                     {displayMessage}

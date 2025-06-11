@@ -11,6 +11,7 @@ const ShareReflectionModal = ({
   isOpen,
   onClose,
   onSubmit,
+  submitting = false,
   reflectionMetadata,
   setReflectionMetadata,
   loadingMetadata = false
@@ -34,7 +35,7 @@ const ShareReflectionModal = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-lg relative">
+      <div className="bg-white rounded-2xl p-6 max-w-md w-full shadow-lg relative max-h-[90vh] overflow-y-auto">
         {loadingMetadata && (
           <div className="absolute inset-0 bg-white bg-opacity-80 flex items-center justify-center z-50 rounded-2xl">
             <div className="text-center flex flex-col items-center justify-items">
@@ -156,9 +157,10 @@ const ShareReflectionModal = ({
           </button>
           <button
             onClick={onSubmit}
+            disabled={submitting || loadingMetadata}
             className="px-4 py-2 text-sm rounded bg-[#ece8e1] hover:bg-[#e7e2db] transition"
           >
-            Share with Peers
+            {submitting ? "Sharing..." : "Share with Peers"}
           </button>
         </div>
       </div>

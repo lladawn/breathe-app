@@ -112,6 +112,7 @@ const ReflectChatPage = () => {
       "Your reflection is safely held 🌿 You’ll find it resting in the archive."
     );
     setSaving(false);
+    navigate("/archive");
   };
 
   const handleShareWithPeers = async () => {

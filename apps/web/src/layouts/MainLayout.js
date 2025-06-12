@@ -24,7 +24,10 @@ const MainLayout = ({ children }) => {
         {/* pt-10 pb-20 */}
         {/* py-6 sm:py-10  */}
 
-        <div className="relative min-h-screen z-10 w-full max-w-3xl mx-auto px-4 animate-fade-in flex items-center justify-center py-20">
+        <div
+          className="relative min-h-screen z-10 w-full max-w-3xl mx-auto px-4 animate-fade-in flex items-center justify-center"
+          // py-20
+        >
           {children}
         </div>
       </main>

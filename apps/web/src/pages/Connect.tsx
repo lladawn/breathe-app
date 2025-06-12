@@ -214,21 +214,12 @@ const ConnectPage: React.FC = () => {
                     );
                 }}
                 // className="w-full bg-[#f4f1eb] text-[#5e5a55] font-serif flex overflow-x-auto snap-x snap-mandatory space-x-8 px-4 py-6"
-                //                 className="
-                //     w-full bg-[#f4f1eb] text-[#5e5a55] font-serif
-                //     flex overflow-x-auto snap-x snap-mandatory space-x-4 px-4 py-6
-                //     md:flex-col md:overflow-x-hidden md:space-x-0 md:space-y-8 md:px-0 md:items-center
-                //   "
-
-                //                 className="
-                //     w-full bg-[#f4f1eb] text-[#5e5a55] font-serif
-                //     flex overflow-x-auto snap-x snap-mandatory space-x-8 px-4 py-6
-                //     md:space-x-12 md:px-8
-                //   "
 
                 className="
-                    w-screen overflow-x-auto overflow-y-hidden snap-x snap-mandatory flex
-                    text-[#5e5a55] font-serif h-screen
+                    w-screen overflow-x-auto scrollbar-hide snap-x 
+                    snap-mandatory flex
+                    text-[#5e5a55] font-serif
+                    h-screen overflow-y-hidden py-20
                     scroll-smooth
                     max-w-[500px]
                 "

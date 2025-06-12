@@ -35,7 +35,7 @@ const PeerReflectionsSection = ({
                     </>
                 ) : (
                     <div className="flex flex-col gap-0">
-                        {peerReflections.map((reflection) => (
+                        {peerReflections.slice().sort(() => Math.random() - 0.5).map((reflection) => (
                             <div
                                 key={reflection.id}
                                 className="bg-[#fff9f3] rounded-2xl p-4 shadow-md border border-[#e4dfd8] hover:shadow-lg transition mb-5"

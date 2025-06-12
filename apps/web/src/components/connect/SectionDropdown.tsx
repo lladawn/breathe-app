@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 const sections = [
@@ -11,6 +11,29 @@ const sections = [
 const SectionDropdown = ({ currentSection }: { currentSection: string }) => {
     const [menuOpen, setMenuOpen] = React.useState(false);
     const navigate = useNavigate();
+    const menuRef = useRef<HTMLDivElement>(null);
+
+    // Close on outside click
+    // useEffect(() => {
+    //     const handleClickOutside = (event: MouseEvent) => {
+    //         if (
+    //             menuRef.current &&
+    //             !menuRef.current.contains(event.target as Node)
+    //         ) {
+    //             setMenuOpen(false);
+    //         }
+    //     };
+
+    //     if (menuOpen) {
+    //         document.addEventListener("mousedown", handleClickOutside);
+    //     } else {
+    //         document.removeEventListener("mousedown", handleClickOutside);
+    //     }
+
+    //     return () => {
+    //         document.removeEventListener("mousedown", handleClickOutside);
+    //     };
+    // }, [menuOpen]);
 
     return (
         <>
@@ -21,13 +44,13 @@ const SectionDropdown = ({ currentSection }: { currentSection: string }) => {
                     className="bg-[#ece8e1] rounded-r-full px-3 py-2 shadow hover:bg-[#e4dfd8] transition"
                 >
                     ☰
-                    {/* 📖 */}
                 </button>
             </div>
 
             {/* Navigation Menu */}
             {menuOpen && (
                 <div
+                    ref={menuRef}
                     className="fixed top-1/2 left-10 transform -translate-y-1/2 z-50 bg-[#f4f1eb] rounded-lg shadow-lg border border-[#e4dfd8] transition-transform duration-300"
                 >
                     <ul className="flex flex-col">

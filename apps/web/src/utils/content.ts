@@ -9,6 +9,7 @@ export const getChapters = (navigate: NavigateFunction) => [
     id: "pause",
     number: "Chapter 1",
     title: "The Pause",
+    slug: "the-pause",
     content: `You found your way here — not to scroll, but to slow down.
 To pause and listen.
 Maybe for the first time in a while, you let the quiet find you.
@@ -23,6 +24,7 @@ Let’s see what you might hear — if you listen gently.`,
     id: "quiet-ache",
     number: "Chapter 2",
     title: "The Quiet Ache",
+    slug: "the-quiet-ache",
     content: `There’s a space inside you that holds more than you say.
 Words unsent, feelings unshared.
 This is where reflections begin — not to fix, but to witness.
@@ -37,6 +39,7 @@ Let it spill softly here.`,
     id: "gentle-echo",
     number: "Chapter 3",
     title: "A Gentle Echo",
+    slug: "a-gentle-echo",
     content: `Sometimes, a quiet note from someone else can shift the air inside you.
 A moment that says: I feel it too.
 Here, your reflections gather with others — not to shout, but to breathe together.
@@ -50,7 +53,8 @@ A simple warmth. A gentle “me too.”`,
   {
     id: "walk-together",
     number: "Chapter 4",
-    title: "Walk Together",
+    title: "Take a Walk",
+    slug: "take-a-walk",
     content: `Some connections ask for more than a glance.
 They ask for presence.
 A walk, side by side — not to chase or fix, but to simply be.
@@ -66,6 +70,7 @@ Let’s walk together.`,
     id: "letting-go",
     number: "Chapter 5",
     title: "Letting Go",
+    slug: "letting-go",
     content: `Every breath finds its end.
 Every step reaches a pause.
 
@@ -92,6 +97,7 @@ As breathers, we let go. We learn. We keep moving—gently.`,
     id: "depth-mode",
     number: "Chapter 6",
     title: "The Deep End",
+    slug: "the-deep-end",
     content: `Under mindful construction...
     👷‍♀️🛠️👷
     `,

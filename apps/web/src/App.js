@@ -1,6 +1,11 @@
 // App.js
 import { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import MainLayout from "./layouts/MainLayout.js";
 // import { BreatheLandingPage } from "./pages/OldLandingPage.js";
 // import LottieAnimation from "./components/LottieAnimation.js";
@@ -10,7 +15,7 @@ import ConnectSoonPage from "./pages/ConnectComingSoon.js";
 import SaveNotePage from "./pages/SaveNote.js";
 import HeartPage from "./pages/HeartPage.js";
 import Storybook from "./pages/Storybook.tsx";
-import HomePage from "./pages/Home.js";
+import HomePage from "./pages/Home.tsx";
 import ConnectPage from "./pages/Connect.tsx";
 import { v4 as uuidv4 } from "uuid";
 
@@ -31,7 +36,10 @@ export default function App() {
         {/* <LottieAnimation animation={fallingLeaves} /> */}
 
         <Routes>
-          <Route path="/" element={<HomePage />} />
+          {/* <Route path="/" element={<HomePage />} /> */}
+          {/* Redirect root to /home */}
+          <Route path="/" element={<Navigate to="/home" replace />} />
+          <Route path="/home" element={<HomePage />} />
           <Route path="/storybook" element={<Storybook />} />
 
           {/* All features 👇 */}

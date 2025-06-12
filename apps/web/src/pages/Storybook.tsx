@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { getChapters } from "../utils/content";
 // import useScrollShadows from "../hooks/useScrollShadows";
 
@@ -23,7 +23,11 @@ export default function BreatheBook() {
   const navigate = useNavigate();
   const chapters = getChapters(navigate);
   const scrollRefOuter = useRef<HTMLDivElement>(null);
-  const scrollRefInner = useRef<HTMLDivElement>(null);
+  // const scrollRefInner = useRef<HTMLDivElement>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const chapterSlug = searchParams.get("chapter");
+
+
 
 
   // Load bookmark if exists
@@ -37,25 +41,40 @@ export default function BreatheBook() {
 
   const chapter = chapters[current];
 
+  useEffect(() => {
+
+    if (chapterSlug) {
+      // console.log(`executes1: ${chapterSlug}`)
+      const index = chapters.findIndex(c => c.slug === chapterSlug);
+      if (index !== -1) {
+        setCurrent(index);
+        localStorage.setItem("breatheBookmark", index.toString());
+      }
+    } else {
+      if (chapter) {
+        // console.log(`executes2: ${chapter?.slug}`)
+        setSearchParams({ chapter: chapter?.slug });
+      }
+    }
+  }, [chapterSlug, chapters]);
+
   const next = () => {
     if (current < chapters.length - 1) {
       const nextIndex = current + 1;
-      setCurrent(nextIndex);
-      localStorage.setItem("breatheBookmark", nextIndex.toString());
+      setSearchParams({ chapter: chapters[nextIndex].slug });
     }
   };
 
   const back = () => {
     if (current > 0) {
       const prevIndex = current - 1;
-      setCurrent(prevIndex);
-      localStorage.setItem("breatheBookmark", prevIndex.toString());
+      setSearchParams({ chapter: chapters[prevIndex].slug });
     }
   };
 
   const reset = () => {
     localStorage.removeItem("breatheBookmark");
-    setCurrent(0);
+    setSearchParams({ chapter: chapters[0].slug });
   };
 
   useEffect(() => {

@@ -1,9 +1,39 @@
-import { useNavigate } from "react-router-dom";
+import { useRef, useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import LottieAnimation from "../components/LottieAnimation";
 import breathing from "../assets/animations/breathe.json";
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
+
+  useEffect(() => {
+    const container = containerRef.current;
+
+    if (!container) return;
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 20;
+
+      if (isAtBottom && !hasScrolledToEnd) {
+        setHasScrolledToEnd(true);
+        // setSearchParams({ message: "thank-you-for-reading" });
+        setSearchParams((prev) => {
+          const newParams = new URLSearchParams(prev);
+          newParams.set("message", "thank-you-for-reading");
+          return newParams;
+        });
+        // wait for 10 seconds, or show a navigating in 10s in UI...
+        // navigate("/storybook")
+      }
+    };
+
+    container.addEventListener("scroll", handleScroll);
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, [hasScrolledToEnd, setSearchParams]);
 
   return (
     <div className="relative w-full font-serif text-[#5e5a55] flex flex-col items-center justify-start px-4">
@@ -24,6 +54,7 @@ const HomePage = () => {
 
         {/* Scrollable Content */}
         <div
+          ref={containerRef}
           className="
             relative
             bg-[#f8f4ef]
@@ -89,9 +120,10 @@ const HomePage = () => {
               You can write. You can reflect. You can walk with someone for a
               while — not to fix each other, just to{" "}
               <span className="font-semibold">be</span> there.
-              <p className="italic">
+              <br />
+              <span className="italic">
                 (as you would know we are human b.e.i.n.g.s.)
-              </p>
+              </span>
             </p>
             <p>And if all you do is breathe here… that’s more than enough.</p>
             <p>

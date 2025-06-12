@@ -1,0 +1,113 @@
+service: breathe-backend
+org: theopenthread
+app: breathe-app
+
+frameworkVersion: '3'
+
+useDotenv: true  # ✅ This ensures .env is loaded early
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-south-1 # or your preferred region
+  environment:
+    MONGODB_URI: ${env:MONGODB_URI}
+    MONGODB_USERNAME: ${env:MONGODB_USERNAME}
+    MONGODB_PWD: ${env:MONGODB_PWD}
+  # remove dynamo db for now
+  # iamRoleStatements:
+  #   - Effect: "Allow"
+  #     Action:
+  #       - "dynamodb:*"
+  #     Resource: "*"
+
+functions:
+  createReflection:
+    handler: src/handlers/createReflection.handler
+    events:
+      - http:
+          path: reflections
+          method: post
+          # cors: ${self:custom.defaultCors}
+          cors: true
+  getPeerReflections:
+    handler: src/handlers/getPeerReflections.handler
+    events:
+      - http:
+          path: peer-reflections
+          method: get
+          cors: true
+  getUserReflections:
+    handler: src/handlers/getUserReflections.handler
+    events:
+      - http:
+          path: user-reflections
+          method: get
+          cors: true
+  sendMoment:
+    handler: src/handlers/sendMoment.handler
+    events:
+      - http:
+          path: send-moment
+          method: post
+          cors: true
+  getUserMoments:
+    handler: src/handlers/getUserMoments.handler
+    events:
+      - http:
+          path: moments
+          method: get
+          cors: true
+  createWalkTogetherRequest:
+    handler: src/handlers/createWalkTogetherRequest.handler
+    events:
+      - http:
+          path: walk-together
+          method: post
+          cors: true
+  getWalkTogetherRequests:
+    handler: src/handlers/getWalkTogetherRequests.handler
+    events:
+      - http:
+          path: walk-requests
+          method: get
+          cors: true
+  # respondToWalkTogetherRequest:
+  #   handler: src/handlers/respondToWalkTogetherRequest.handler
+  #   events:
+  #     - http:
+  #         path: walk-response
+  #         method: post
+  #         cors: true
+  
+
+plugins:
+  - serverless-esbuild
+  - serverless-offline
+  - serverless-dotenv-plugin
+
+custom:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    target: node18
+    platform: node
+    concurrency: 10
+    watch:
+      pattern: ["src/**/*.ts"] # Watch your source directory
+      ignore: ["node_modules/**"]
+  serverless-offline:
+    httpPort: 8000
+  dotenv:
+    path: .env
+  defaultCors:
+    origin: '*'
+    headers:
+      - Content-Type
+      - Authorization
+      - X-Amz-Date
+      - X-Api-Key
+      - X-Amz-Security-Token
+      - X-Amz-User-Agent
+    allowCredentials: false

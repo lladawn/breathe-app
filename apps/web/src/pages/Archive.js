@@ -38,7 +38,7 @@ const ArchivePage = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto flex-1">
+    <div className="max-w-3xl mx-auto flex-1 py-20">
       <LottieAnimation animation={reflect} opacity={0.3} scale={1.5} />
       <h2 className="text-3xl font-serif font-semibold mb-6 text-center">
         Your Reflections

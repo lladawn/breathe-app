@@ -3,15 +3,20 @@ import {
   callOpenAI,
   generateHighlight,
   generateDetailedSummary,
+  generateMetadataFromReflection,
 } from "../functions/openai.js";
 import LottieAnimation from "../components/LottieAnimation.js";
 import reflect from "../assets/animations/reflect.json";
 import reflecting from "../assets/animations/reflect.json";
 import { ReflectHeading } from "../components/ReflectHeading.js";
 import { useNavigate } from "react-router-dom";
+import { createReflection } from "../functions/api"; // Import your createReflection function
+import ShareReflectionModal from "../components/ShareReflectionModal.tsx";
 
 const ReflectChatPage = () => {
   const navigate = useNavigate();
+  const userId =
+    localStorage.getItem("breatheUserId") || /* rare */ "unknown_user";
 
   const [messages, setMessages] = useState(() => {
     return (
@@ -27,6 +32,16 @@ const ReflectChatPage = () => {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [hasStarted, setHasStarted] = useState(messages.length > 1);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [reflectionMetadata, setReflectionMetadata] = useState({
+    reflection: "",
+    alias: "",
+    feeling: "",
+    tags: [],
+  });
+  const [loadingMetadata, setLoadingMetadata] = useState(false);
+  const [submittingReflection, setSubmittingReflection] = useState(false);
+
   const endRef = useRef(null);
 
   useEffect(() => {
@@ -80,7 +95,6 @@ const ReflectChatPage = () => {
   const handleSaveReflection = async () => {
     setSaving(true);
     const convoMessages = messages.filter((m) => m.role === "user");
-
     const highlight = await generateHighlight(convoMessages);
     const aiSummary = await generateDetailedSummary(convoMessages);
 
@@ -98,6 +112,41 @@ const ReflectChatPage = () => {
       "Your reflection is safely held 🌿 You’ll find it resting in the archive."
     );
     setSaving(false);
+    navigate("/archive");
+  };
+
+  const handleShareWithPeers = async () => {
+    const convoMessages = messages.filter((m) => m.role === "user");
+    setShowShareModal(true);
+    setLoadingMetadata(true);
+    const metadata = await generateMetadataFromReflection(convoMessages);
+    setReflectionMetadata(metadata);
+    setLoadingMetadata(false);
+    // setShowShareModal(true);
+  };
+
+  const handleShareSubmit = async () => {
+    setSubmittingReflection(true);
+    try {
+      const { reflection, alias, feeling, tags } = reflectionMetadata;
+      const reflectionData = {
+        userId,
+        alias,
+        feeling,
+        reflection,
+        tags,
+      };
+
+      await createReflection(reflectionData);
+
+      alert("Your reflection has been shared with peers. 🌱");
+      setSubmittingReflection(false);
+      setShowShareModal(false);
+      navigate("/connect?section=your-reflections"); // Navigate to Peer Room -- Your Reflections section
+    } catch (error) {
+      console.error("Error sharing reflection:", error);
+      alert(`Failed to share reflection. Please try again.`);
+    }
   };
 
   return (
@@ -121,6 +170,13 @@ const ReflectChatPage = () => {
               className="px-4 py-1 text-sm rounded-full border border-[#ddd] bg-white text-gray-600 hover:bg-[#f9f7f3] shadow-sm transition"
             >
               ✨ Start Fresh
+            </button>
+            <button
+              onClick={handleShareWithPeers}
+              disabled={loadingMetadata}
+              className="px-4 py-1 text-sm rounded-full border border-[#ddd] bg-white text-gray-600 hover:bg-[#f9f7f3] shadow-sm transition"
+            >
+              {loadingMetadata ? "Loading metadata..." : "🌿 Share with Peers"}
             </button>
           </div>
         )}
@@ -161,12 +217,13 @@ const ReflectChatPage = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") handleSend();
+                  if (e.key === "Enter" && !loading) handleSend();
                 }}
                 className="flex-1 border px-4 py-2 rounded"
               />
               <button
                 onClick={handleSend}
+                disabled={loading}
                 className="bg-[#ece8e1] px-4 py-2 rounded shadow-sm hover:shadow"
               >
                 Reflect
@@ -188,12 +245,13 @@ const ReflectChatPage = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter") handleSend();
+                if (e.key === "Enter" && !loading) handleSend();
               }}
               className="flex-1 border px-4 py-2 rounded text-base focus:outline-none focus:ring-2 focus:ring-[#d4cec5] transition"
             />
             <button
               onClick={handleSend}
+              disabled={loading}
               className="bg-[#ece8e1] px-4 py-2 rounded shadow-sm hover:shadow text-base transition"
             >
               Reflect
@@ -212,6 +270,17 @@ const ReflectChatPage = () => {
           👈 Take me back to the story
         </button>
       </div>
+
+      {/* Share Modal */}
+      <ShareReflectionModal
+        isOpen={showShareModal}
+        onClose={() => setShowShareModal(false)}
+        onSubmit={handleShareSubmit}
+        submitting={submittingReflection}
+        reflectionMetadata={reflectionMetadata}
+        setReflectionMetadata={setReflectionMetadata}
+        loadingMetadata={loadingMetadata}
+      />
     </div>
   );
 };

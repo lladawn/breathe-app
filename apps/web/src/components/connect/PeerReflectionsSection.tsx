@@ -1,19 +1,50 @@
-import React from "react";
+import { useMemo, useState } from "react";
+import { sendMoment } from "../../functions/api";
+import { useNavigate } from "react-router-dom";
 
 const PeerReflectionsSection = ({
     peerReflections,
     loadingPeerReflections,
-    handleSendMoment,
-    sendingMoment,
     setSelectedMomentReflection,
-    setMomentType,
-    setMomentMessage,
     setShowMomentModal,
     showMomentModal,
-    momentType,
-    momentMessage,
     selectedMomentReflection
 }) => {
+    const navigate = useNavigate();
+    const [momentMessage, setMomentMessage] = useState("");
+    const [sendingMoment, setSendingMoment] = useState(false)
+    const [momentType, setMomentType] = useState("");
+
+    const shuffledReflections = useMemo(() => {
+        return peerReflections.slice().sort(() => Math.random() - 0.5);
+    }, [peerReflections]);
+
+
+    const handleSendMoment = async (reflection, type, message = "") => {
+        setSendingMoment(true)
+        const userId = localStorage.getItem("breatheUserId") || "unknown_user";
+        const momentData = {
+            type,
+            to: reflection?.userId,
+            from: userId,
+            reflection: {
+                id: reflection?.id,
+                snapshot: reflection?.reflection
+            },
+            message,
+        };
+
+        try {
+            await sendMoment(momentData);
+            // alert(`Your ${type} moment was sent. 🌱`);
+            setSendingMoment(false)
+            setShowMomentModal(false);
+            navigate("/connect?section=moments", { replace: true });
+        } catch (error) {
+            alert("Failed to send moment. Please try again.");
+        }
+    };
+
     return (
         <>
             <section id="peer-reflections"
@@ -35,31 +66,31 @@ const PeerReflectionsSection = ({
                     </>
                 ) : (
                     <div className="flex flex-col gap-0">
-                        {peerReflections.slice().sort(() => Math.random() - 0.5).map((reflection) => (
+                        {shuffledReflections.map((reflection) => (
                             <div
-                                key={reflection.id}
+                                key={reflection?.id}
                                 className="bg-[#fff9f3] rounded-2xl p-4 shadow-md border border-[#e4dfd8] hover:shadow-lg transition mb-5"
                             >
                                 {/* Reflection Text */}
                                 <p className="text-base leading-relaxed mb-2">
-                                    {reflection.reflection}
+                                    {reflection?.reflection}
                                 </p>
 
                                 {/* Alias (if present) */}
                                 {reflection.alias && (
                                     <p className="text-xs italic text-gray-500 mb-2">
-                                        — {reflection.alias}
+                                        — {reflection?.alias}
                                     </p>
                                 )}
 
                                 {/* Feeling */}
                                 <p className="text-sm text-gray-500 italic mb-3">
-                                    Feeling: {reflection.feeling}
+                                    Feeling: {reflection?.feeling}
                                 </p>
 
                                 {/* Tags */}
                                 <div className="flex flex-wrap  gap-2 mb-5">
-                                    {reflection.tags.map((tag) => (
+                                    {reflection?.tags.map((tag) => (
                                         <span
                                             key={tag}
                                             className="bg-[#ece8e1] text-xs text-[#6e6861] px-2 py-1 rounded-full"
@@ -122,8 +153,8 @@ const PeerReflectionsSection = ({
                                 </button>
                                 <button
                                     onClick={() => {
-                                        handleSendMoment(selectedMomentReflection.id, selectedMomentReflection.userId, momentType, momentMessage);
-                                        setShowMomentModal(false);
+                                        handleSendMoment(selectedMomentReflection, momentType, momentMessage);
+
                                     }}
                                     disabled={sendingMoment}
                                     className="px-4 py-2 text-sm rounded bg-[#ece8e1] hover:bg-[#e4dfd8] transition"

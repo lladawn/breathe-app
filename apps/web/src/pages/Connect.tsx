@@ -39,9 +39,7 @@ const ConnectPage: React.FC = () => {
 
     const [showMomentModal, setShowMomentModal] = useState(false);
     const [selectedMomentReflection, setSelectedMomentReflection] = useState(null);
-    const [momentType, setMomentType] = useState("");
-    const [momentMessage, setMomentMessage] = useState("");
-    const [sendingMoment, setSendingMoment] = useState(false)
+
 
     const [showRawReflectionModal, setShowRawReflectionModal] = useState(false);
     const [reflectionMetadata, setReflectionMetadata] = useState({
@@ -117,26 +115,7 @@ const ConnectPage: React.FC = () => {
         }
     };
 
-    const handleSendMoment = async (reflectionId, toUserId, type, message = "") => {
-        setSendingMoment(true)
-        const userId = localStorage.getItem("breatheUserId") || "unknown_user";
-        const momentData = {
-            type,
-            to: toUserId,
-            from: userId,
-            reflectionCardId: reflectionId,
-            message,
-        };
 
-        try {
-            await sendMoment(momentData);
-            alert(`Your ${type} moment was sent. 🌱`);
-            setSendingMoment(false)
-            navigate("/connect?section=moments", { replace: true });
-        } catch (error) {
-            alert("Failed to send moment. Please try again.");
-        }
-    };
 
     const handleRawReflectionSubmit = async () => {
         setSubmittingReflection(true)
@@ -231,15 +210,9 @@ const ConnectPage: React.FC = () => {
                     <PeerReflectionsSection
                         peerReflections={peerReflections}
                         loadingPeerReflections={loadingPeerReflections}
-                        handleSendMoment={handleSendMoment}
-                        sendingMoment={sendingMoment}
                         setSelectedMomentReflection={setSelectedMomentReflection}
-                        setMomentType={setMomentType}
-                        setMomentMessage={setMomentMessage}
                         setShowMomentModal={setShowMomentModal}
                         showMomentModal={showMomentModal}
-                        momentType={momentType}
-                        momentMessage={momentMessage}
                         selectedMomentReflection={selectedMomentReflection}
                     />
                 }

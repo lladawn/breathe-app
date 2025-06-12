@@ -7,15 +7,14 @@ const moments = db.collection("moments");
 export const handler = async (event: any) => {
   try {
     const body = JSON.parse(event.body);
-    const { type, reflectionCardId, message, to, from } = body;
+    const { type, reflection, message, to, from } = body;
 
-    if (!type || !reflectionCardId || !to || !from) {
+    if (!type || !reflection || !to || !from) {
       return {
         statusCode: 400,
         headers: corsHeaders,
         body: JSON.stringify({
-          error:
-            "Missing required fields: type or reflectionCardId or to or from",
+          error: "Missing required fields: type or reflection or to or from",
         }),
       };
     }
@@ -31,7 +30,7 @@ export const handler = async (event: any) => {
     const moment = {
       id: uuidv4(),
       type,
-      reflectionCardId, // For matching the specific reflection
+      reflection, // For matching the specific reflection
       to, // For listing moments received by a user (this is the recipient)
       from, // From listing the moments they sent (this is the sender)
       message: message || null,

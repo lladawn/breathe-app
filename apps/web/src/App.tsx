@@ -14,10 +14,11 @@ import ArchivePage from "./pages/Archive.js";
 import ConnectSoonPage from "./pages/ConnectComingSoon.js";
 import SaveNotePage from "./pages/SaveNote.js";
 import HeartPage from "./pages/HeartPage.js";
-import Storybook from "./pages/Storybook.tsx";
-import HomePage from "./pages/Home.tsx";
-import ConnectPage from "./pages/Connect.tsx";
+import Storybook from "./pages/Storybook";
+import HomePage from "./pages/Home";
+import ConnectPage from "./pages/Connect";
 import { v4 as uuidv4 } from "uuid";
+import AddToHomePrompt from "./components/AddToHomePrompt";
 
 // import fallingLeaves from "./assets/animations/falling-leaves.json";
 
@@ -34,6 +35,8 @@ export default function App() {
     <Router>
       <MainLayout>
         {/* <LottieAnimation animation={fallingLeaves} /> */}
+
+        <AddToHomePrompt />
 
         <Routes>
           {/* <Route path="/" element={<HomePage />} /> */}

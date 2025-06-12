@@ -12,6 +12,8 @@ import YourReflectionsSection from "../components/connect/YourReflectionsSection
 import MomentsSection from "../components/connect/MomentsSection";
 import WalkTogetherRequestsSection from "../components/connect/WalkTogetherRequestsSection";
 import SectionDropdown from "../components/connect/SectionDropdown";
+import LottieAnimation from "../components/LottieAnimation";
+import laying from "../assets/animations/laying.json"
 
 const sections = {
     peerReflections: "peer-reflections",
@@ -150,6 +152,8 @@ const ConnectPage: React.FC = () => {
 
     return (
         <>
+            <LottieAnimation animation={laying} opacity={0.2} scale={1.5} />
+
             {/* Horizontal scroll hint */}
             {location.search.includes("peer-reflections") && (
                 <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-40 pointer-events-none">

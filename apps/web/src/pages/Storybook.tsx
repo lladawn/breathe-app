@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getChapters } from "../utils/content";
+import ChapterNavMenu from "../components/ChapterNavMenu";
 // import useScrollShadows from "../hooks/useScrollShadows";
 
 // Placeholder Button
@@ -19,7 +20,7 @@ const Button = ({ children, onClick, className = "", variant = "default" }) => (
   </button>
 );
 
-export default function BreatheBook() {
+export default function Storybook() {
   const navigate = useNavigate();
   const chapters = getChapters(navigate);
   const scrollRefOuter = useRef<HTMLDivElement>(null);
@@ -82,97 +83,101 @@ export default function BreatheBook() {
   }, [current]);
 
   return (
-    <div
-      ref={scrollRefOuter}
-      className="px-2 text-left font-serif text-lg text-muted-foreground bg-muted flex justify-center"
-    >
-      <div className="w-full sm:w-[90vw] md:w-[650px] flex flex-col">
-        <div className="flex justify-between items-center mb-4 w-full">
-          <span className="text-sm text-muted-foreground">
-            Chapter {current + 1} of {chapters.length}
-          </span>
-          {current > 0 && (
-            <Button
-              onClick={reset}
-              variant="ghost"
-              className="text-xs text-muted-foreground hover:text-foreground"
+    <>
+      <ChapterNavMenu />
+      <div
+        ref={scrollRefOuter}
+        className="px-2 text-left font-serif text-lg text-muted-foreground bg-muted flex justify-center"
+      >
+        <div className="w-full sm:w-[90vw] md:w-[650px] flex flex-col">
+          <div className="flex justify-between items-center mb-4 w-full">
+            <span className="text-sm text-muted-foreground">
+              Chapter {current + 1} of {chapters.length}
+            </span>
+            {current > 0 && (
+              <Button
+                onClick={reset}
+                variant="ghost"
+                className="text-xs text-muted-foreground hover:text-foreground"
+              >
+                Take me to the beginning
+              </Button>
+            )}
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={chapter.id}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -30 }}
+              transition={{ duration: 0.7 }}
+              className="w-full flex flex-col"
             >
-              Take me to the beginning
-            </Button>
-          )}
-        </div>
+              <div className="bg-white p-6 rounded-lg shadow-sm w-full flex flex-col h-[70vh] border border-[#e4dfd8] shadow-[0_4px_14px_rgba(0,0,0,0.05)]">
+                {/* Chapter Title */}
+                <p className="text-[0.9rem] text-muted-foreground text-center italic mb-1 text-gray-500">
+                  {chapter.number}
+                </p>
+                <h1 className="text-2xl font-semibold mb-4 text-foreground text-center">
+                  {chapter.title}
+                </h1>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={chapter.id}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -30 }}
-            transition={{ duration: 0.7 }}
-            className="w-full flex flex-col"
-          >
-            <div className="bg-white p-6 rounded-lg shadow-sm w-full flex flex-col h-[70vh] border border-[#e4dfd8] shadow-[0_4px_14px_rgba(0,0,0,0.05)]">
-              {/* Chapter Title */}
-              <p className="text-[0.9rem] text-muted-foreground text-center italic mb-1 text-gray-500">
-                {chapter.number}
-              </p>
-              <h1 className="text-2xl font-semibold mb-4 text-foreground text-center">
-                {chapter.title}
-              </h1>
-
-              {/* Scrollable Content */}
-              <div
-                className={`flex-1 overflow-y-auto mb-6 
+                {/* Scrollable Content */}
+                <div
+                  className={`flex-1 overflow-y-auto mb-6 
                           leading-relaxed break-words
                           p-3 rounded-lg `}
-              // shadow-inner transition-all 
-              // style={{
-              //   boxShadow: "inset 0 -20px 20px -20px rgba(0,0,0,0.1)", // subtle fade at bottom
-              // }}
-              >
-                {chapter.content.split('\n').map((line, idx) => (
-                  <p key={idx} className="mb-3">{line}</p>
-                ))}
-              </div>
-
-              {/* CTA and Navigation */}
-              <div className="flex flex-col gap-4">
-                <div className="text-center">
-                  <Button
-                    onClick={chapter.onClick}
-                    className="bg-foreground text-background hover:bg-foreground/90"
-                  >
-                    {chapter.cta}
-                  </Button>
+                // shadow-inner transition-all 
+                // style={{
+                //   boxShadow: "inset 0 -20px 20px -20px rgba(0,0,0,0.1)", // subtle fade at bottom
+                // }}
+                >
+                  {chapter.content.split('\n').map((line, idx) => (
+                    <p key={idx} className="mb-3">{line}</p>
+                  ))}
                 </div>
-                <p className="text-[0.9rem] text-muted-foreground text-center italic mb-1 text-gray-500">
-                  {chapter.undernote}
-                </p>
 
-                <div className="flex justify-between flex-wrap gap-4 w-full">
-                  {current > 0 ? (
-                    <Button onClick={back} variant="ghost">
-                      ← Go back
-                    </Button>
-                  ) : (
-                    <div />
-                  )}
-
-                  {current < chapters.length - 1 && (
+                {/* CTA and Navigation */}
+                <div className="flex flex-col gap-4">
+                  <div className="text-center">
                     <Button
-                      onClick={next}
-                      variant="ghost"
-                      className="text-muted-foreground hover:text-foreground"
+                      onClick={chapter.onClick}
+                      className="bg-foreground text-background hover:bg-foreground/90"
                     >
-                      Turn the page →
+                      {chapter.cta}
                     </Button>
-                  )}
+                  </div>
+                  <p className="text-[0.9rem] text-muted-foreground text-center italic mb-1 text-gray-500">
+                    {chapter.undernote}
+                  </p>
+
+                  <div className="flex justify-between flex-wrap gap-4 w-full">
+                    {current > 0 ? (
+                      <Button onClick={back} variant="ghost">
+                        ← Go back
+                      </Button>
+                    ) : (
+                      <div />
+                    )}
+
+                    {current < chapters.length - 1 && (
+                      <Button
+                        onClick={next}
+                        variant="ghost"
+                        className="text-muted-foreground hover:text-foreground"
+                      >
+                        Turn the page →
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </motion.div>
-        </AnimatePresence>
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
-    </div>
+    </>
+
   );
 }

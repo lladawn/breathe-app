@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import LottieAnimation from "../components/LottieAnimation";
 import breathing from "../assets/animations/breathe.json";
+import AddToHomePrompt from "../components/AddToHomePrompt";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -43,14 +44,14 @@ const HomePage = () => {
           Breathe
         </h1>
         <p className="text-lg sm:text-xl italic text-center mb-8 text-[#6e6861]">
-          A living book for those who still feel.
+          A living book that listens too.
         </p>
 
         {/* Soft Divider */}
         <hr className="border border-[#3c3a37] opacity-20 mb-8" />
 
         {/* Background Animation */}
-        <LottieAnimation animation={breathing} opacity={0.13} scale={1.8} />
+        <LottieAnimation animation={breathing} opacity={0.2} scale={2} />
 
         {/* Scrollable Content */}
         <div

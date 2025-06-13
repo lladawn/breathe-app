@@ -15,3 +15,32 @@ export function getApproxTimeAgo(timestamp) {
 
   return "A while ago";
 }
+
+export function defaultMetadata() {
+  return {
+    reflection: "I’ve been pausing to listen to myself more.",
+    alias: "Quiet Flame",
+    feeling: "Sitting with what is",
+    tags: ["reflection", "stillness", "softness"],
+  };
+}
+
+export function trimConvoForReflection(convo, maxTokens = 2000) {
+  const userMessages = convo.filter(
+    (msg) =>
+      msg.role === "user" ||
+      (msg.role === "assistant" && msg.content.length < 200)
+  );
+
+  let total = 0;
+  const limited = [];
+
+  for (let i = userMessages.length - 1; i >= 0; i--) {
+    const msg = userMessages[i];
+    total += msg.content.length;
+    if (total > maxTokens) break;
+    limited.unshift(msg);
+  }
+
+  return limited;
+}

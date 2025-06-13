@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion, useMotionValue } from "framer-motion";
 
 const sections = [
     { id: "peer-reflections", label: "Peer Reflections" },
@@ -9,9 +10,42 @@ const sections = [
 ];
 
 const SectionDropdown = ({ currentSection }: { currentSection: string }) => {
-    const [menuOpen, setMenuOpen] = React.useState(false);
     const navigate = useNavigate();
+    const buttonRef = useRef<HTMLDivElement>(null);
+    const constraintRef = useRef<HTMLDivElement>(null);
     const menuRef = useRef<HTMLDivElement>(null);
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [menuLeft, setMenuLeft] = useState(60);
+    const [menuTop, setMenuTop] = useState<number | null>(null);
+
+    const y = useMotionValue(0);
+
+    // Set initial position to middle-left of screen
+    useLayoutEffect(() => {
+        if (buttonRef.current) {
+            const iconHeight = buttonRef.current.offsetHeight;
+            const middleY = window.innerHeight / 2 - iconHeight / 2;
+            y.set(middleY);
+        }
+    }, []);
+
+    // Adjust menu left offset based on icon width
+    useEffect(() => {
+        if (buttonRef.current) {
+            const rect = buttonRef.current.getBoundingClientRect();
+            setMenuLeft(rect.width + 12);
+        }
+    }, [menuOpen]);
+
+    useEffect(() => {
+        if (menuOpen && buttonRef.current && menuRef.current) {
+            const iconRect = buttonRef.current.getBoundingClientRect();
+            const menuRect = menuRef.current.getBoundingClientRect();
+            const iconCenter = iconRect.top + iconRect.height / 2;
+            const newTop = iconCenter - menuRect.height / 2;
+            setMenuTop(newTop);
+        }
+    }, [menuOpen]);
 
     // Close on outside click
     // useEffect(() => {
@@ -37,21 +71,39 @@ const SectionDropdown = ({ currentSection }: { currentSection: string }) => {
 
     return (
         <>
-            {/* Menu Button */}
-            <div className="fixed top-1/2 left-0 transform -translate-y-1/2 z-50">
+            {/* BOUNDING CONTAINER for strict drag constraints */}
+            <div
+                ref={constraintRef}
+                className="fixed top-[75px] left-0 h-[calc(100vh-200px)] w-[60px] pointer-events-none"
+            />
+
+            {/* DRAGGABLE ICON — fixed within bounds */}
+            <motion.div
+                drag="y"
+                dragConstraints={constraintRef}
+                dragElastic={0}
+                className="fixed left-0 z-50"
+                ref={buttonRef}
+                style={{ top: y }}
+            >
                 <button
                     onClick={() => setMenuOpen(!menuOpen)}
                     className="bg-[#ece8e1] rounded-r-full px-3 py-2 shadow hover:bg-[#e4dfd8] transition"
                 >
                     ☰
                 </button>
-            </div>
+            </motion.div>
 
-            {/* Navigation Menu */}
+            {/* MENU aligned with icon */}
             {menuOpen && (
                 <div
                     ref={menuRef}
-                    className="fixed top-1/2 left-10 transform -translate-y-1/2 z-50 bg-[#f4f1eb] rounded-lg shadow-lg border border-[#e4dfd8] transition-transform duration-300"
+                    className="fixed z-50 bg-[#f4f1eb] rounded-lg shadow-lg border border-[#e4dfd8] transition-transform duration-300"
+                    style={{
+                        // top: buttonRef.current?.getBoundingClientRect().top ?? 200,
+                        top: menuTop ?? 200,
+                        left: menuLeft,
+                    }}
                 >
                     <ul className="flex flex-col">
                         {sections.map((section) => (

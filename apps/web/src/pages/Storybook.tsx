@@ -5,6 +5,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getChapters } from "../utils/content";
 import ChapterNavMenu from "../components/ChapterNavMenu";
+import LottieAnimation from "../components/LottieAnimation";
+import fallingLeaves from "../assets/animations/falling-leaves.json";
+import wind from "../assets/animations/wind.json";
 // import useScrollShadows from "../hooks/useScrollShadows";
 
 // Placeholder Button
@@ -28,7 +31,7 @@ export default function Storybook() {
   const [searchParams, setSearchParams] = useSearchParams();
   const chapterSlug = searchParams.get("chapter");
 
-
+  const [showAnimation, setShowAnimation] = useState(true);
 
 
   // Load bookmark if exists
@@ -84,7 +87,34 @@ export default function Storybook() {
 
   return (
     <>
+      {/* Background Animation */}
+      {showAnimation ? (
+        <LottieAnimation
+          animation={fallingLeaves}
+          opacity={0.2}
+          scale={2.35}
+          speed={0.8}
+          delay={2000}
+        />
+      ) : (<LottieAnimation
+        animation={wind}
+        opacity={0.2}
+        scale={3.5}
+        speed={0.8}
+        delay={1000}
+      />)}
+
+      {/** Play and Pause animation */}
+      <button
+        onClick={() => setShowAnimation((prev) => !prev)}
+        className="fixed bottom-4 right-4 z-[200] bg-white/70 backdrop-blur-md border border-[#e4dfd8] px-4 py-2 rounded-full text-sm shadow hover:bg-white transition"
+      >
+        {showAnimation ? "🌪 Hold the breeze" : "🍂 Let it flow"}
+      </button>
+
+      {/** Chapter Menu Bar */}
       <ChapterNavMenu />
+
       <div
         ref={scrollRefOuter}
         className="px-2 text-left font-serif text-lg text-muted-foreground bg-muted flex justify-center"

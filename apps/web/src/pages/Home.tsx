@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import LottieAnimation from "../components/LottieAnimation";
 import breathing from "../assets/animations/breathe.json";
-import AddToHomePrompt from "../components/AddToHomePrompt";
+
 
 const HomePage = () => {
   const navigate = useNavigate();

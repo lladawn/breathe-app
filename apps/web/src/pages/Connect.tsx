@@ -152,7 +152,7 @@ const ConnectPage: React.FC = () => {
 
     return (
         <>
-            <LottieAnimation animation={laying} opacity={0.2} scale={1.5} />
+            <LottieAnimation animation={laying} opacity={0.2} scale={2.3} />
 
             {/* Horizontal scroll hint */}
             {location.search.includes("peer-reflections") && (

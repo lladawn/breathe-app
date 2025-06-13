@@ -8,10 +8,11 @@ import {
 import LottieAnimation from "../components/LottieAnimation.js";
 import reflect from "../assets/animations/reflect.json";
 import reflecting from "../assets/animations/reflect.json";
-import { ReflectHeading } from "../components/ReflectHeading.js";
+import { ReflectHeading } from "../components/ReflectHeading";
 import { useNavigate } from "react-router-dom";
-import { createReflection } from "../functions/api"; // Import your createReflection function
-import ShareReflectionModal from "../components/ShareReflectionModal.tsx";
+import { createReflection } from "../functions/api";
+import ShareReflectionModal from "../components/ShareReflectionModal";
+import { reflectSystemPrompt } from "../utils/openAiPrompt";
 
 const ReflectChatPage = () => {
   const navigate = useNavigate();
@@ -62,11 +63,7 @@ const ReflectChatPage = () => {
     const newMessages = [...messages, { role: "user", content: userMessage }];
     setMessages(newMessages);
 
-    const systemPrompt = {
-      role: "system",
-      content:
-        "You are a warm and kind, emotionally intelligent guide. Reply in under 100 words.",
-    };
+    const systemPrompt = reflectSystemPrompt;
 
     const finalMessages = [systemPrompt, ...newMessages.slice(-4)];
 
@@ -108,9 +105,9 @@ const ReflectChatPage = () => {
     const updated = [newSummary, ...stored];
     localStorage.setItem("breatheArchive", JSON.stringify(updated));
 
-    alert(
-      "Your reflection is safely held 🌿 You’ll find it resting in the archive."
-    );
+    // alert(
+    //   "Your reflection is safely held 🌿 You’ll find it resting in the archive."
+    // );
     setSaving(false);
     navigate("/archive");
   };
@@ -159,9 +156,8 @@ const ReflectChatPage = () => {
             <button
               onClick={handleSaveReflection}
               disabled={saving}
-              className={`px-4 py-1 text-sm rounded-full border border-[#ddd] bg-white text-gray-600 hover:bg-[#f9f7f3] shadow-sm transition ${
-                saving ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              className={`px-4 py-1 text-sm rounded-full border border-[#ddd] bg-white text-gray-600 hover:bg-[#f9f7f3] shadow-sm transition ${saving ? "opacity-50 cursor-not-allowed" : ""
+                }`}
             >
               {saving ? "Saving..." : "🌿 Save Reflection"}
             </button>
@@ -192,11 +188,10 @@ const ReflectChatPage = () => {
               {messages.map((msg, idx) => (
                 <div
                   key={idx}
-                  className={`max-w-[75%] px-4 py-2 rounded-xl text-sm whitespace-pre-line ${
-                    msg.role === "user"
-                      ? "bg-[#ece8e1] ml-auto text-right"
-                      : "bg-white text-left"
-                  }`}
+                  className={`max-w-[75%] px-4 py-2 rounded-xl text-sm whitespace-pre-line ${msg.role === "user"
+                    ? "bg-[#ece8e1] ml-auto text-right"
+                    : "bg-white text-left"
+                    }`}
                 >
                   {msg.content}
                 </div>

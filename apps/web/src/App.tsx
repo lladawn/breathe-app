@@ -9,7 +9,7 @@ import {
 import MainLayout from "./layouts/MainLayout.js";
 // import { BreatheLandingPage } from "./pages/OldLandingPage.js";
 // import LottieAnimation from "./components/LottieAnimation.js";
-import Reflect from "./pages/Reflect.js";
+import Reflect from "./pages/Reflect";
 import ArchivePage from "./pages/Archive.js";
 import ConnectSoonPage from "./pages/ConnectComingSoon.js";
 import SaveNotePage from "./pages/SaveNote.js";

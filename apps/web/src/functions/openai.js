@@ -1,5 +1,11 @@
 // src/functions/callOpenAI.js
 import OpenAI from "openai";
+import {
+  detailedSummaryPrompt,
+  highlightPrompt,
+  reflectionMetadataPrompt,
+} from "../utils/openAiPrompt";
+import { defaultMetadata, trimConvoForReflection } from "../utils";
 
 const openai = new OpenAI({
   apiKey: process.env.REACT_APP_OPENAI_API_KEY,
@@ -21,43 +27,10 @@ export async function callOpenAI(messages) {
   }
 }
 
-// export async function summarizeConversation(convo) {
-//   try {
-//     const summaryPrompt = [
-//       {
-//         role: "system",
-//         content:
-//           "Summarize this conversation in one warm, emotionally intelligent sentence that captures what the user is processing.",
-//       },
-//       ...convo,
-//     ];
-
-//     const summary = await openai.chat.completions.create({
-//       model: "gpt-4o-mini",
-//       messages: summaryPrompt,
-//       temperature: 0.6,
-//       max_tokens: 100,
-//     });
-
-//     return summary.choices[0].message.content.trim();
-//   } catch (err) {
-//     console.error("Error creating summary:", err);
-//     return "The user is reflecting deeply on something that matters to them.";
-//   }
-// }
-
 export async function generateHighlight(convo) {
   console.log("generateHighlight convo: ", convo);
   try {
-    const summaryPrompt = [
-      {
-        role: "system",
-        content: `
-          A title (under 10 words) that captures the emotional essence of what the user is feeling or reflecting on. It should feel like a quiet headline — tender, true, and reflective. Avoid being generic. Use language that stirs emotion and invites memory.
-            `.trim(),
-      },
-      ...convo,
-    ];
+    const summaryPrompt = [highlightPrompt, ...convo];
 
     const summary = await openai.chat.completions.create({
       model: "gpt-4o-mini",
@@ -78,23 +51,7 @@ export async function generateHighlight(convo) {
 export async function generateDetailedSummary(convo) {
   console.log("generateDetailedSummary convo: ", convo);
   try {
-    const prompt = [
-      {
-        role: "system",
-        content: `
-          Gently reflect on this emotional conversation. 
-          Keep it under 300 words — shorter if the user said little.
-          
-          Capture the user's inner journey with warmth and quiet understanding.
-          Write like a thoughtful narrator — not to fix, but to witness.
-          
-          End with one soft insight — not advice, just a tender truth.
-
-          Let it feel like a page from their own soul.
-            `.trim(),
-      },
-      ...convo,
-    ];
+    const prompt = [detailedSummaryPrompt, ...convo];
 
     const summary = await openai.chat.completions.create({
       model: "gpt-4o-mini",
@@ -115,27 +72,8 @@ export async function generateDetailedSummary(convo) {
 export async function generateMetadataFromReflection(convo) {
   console.log("generateMetadataFromReflection convo: ", convo);
   try {
-    const summaryPrompt = [
-      {
-        role: "system",
-        content: `
-You are a warm and mindful assistant. Given the following reflection conversation, please:
-1. Extract the main reflection content from the user (summarize if needed, capturing the core feeling in a warm, natural tone).
-2. Suggest an alias that captures the spirit of the reflection (e.g. 'Gentle Seeker' or 'Quiet Walker').
-3. Write a short feeling or summary (one phrase).
-4. Suggest 3–5 tags that are meaningful to the reflection (e.g. 'pause', 'breathe', 'growth').
-
-Please respond in this JSON format:
-{
-  "reflection": "",
-  "alias": "",
-  "feeling": "",
-  "tags": []
-}
-        `.trim(),
-      },
-      ...convo,
-    ];
+    const trimmedConvo = trimConvoForReflection(convo);
+    const summaryPrompt = [reflectionMetadataPrompt, ...trimmedConvo];
 
     const summary = await openai.chat.completions.create({
       model: "gpt-4o-mini",
@@ -151,13 +89,18 @@ Please respond in this JSON format:
     try {
       metadata = JSON.parse(raw);
     } catch (parseError) {
-      console.error("Error parsing AI response as JSON:", parseError);
-      metadata = {
-        reflection: "",
-        alias: "Gentle Breather",
-        feeling: "Quiet Reflection",
-        tags: ["pause", "breathe"],
-      };
+      console.warn("Raw output not valid JSON. Trying to extract manually…");
+      const match = raw.match(/\{[\s\S]*?\}/);
+      if (match) {
+        try {
+          metadata = JSON.parse(match[0]);
+        } catch (fallbackError) {
+          console.error("Fallback JSON parse also failed:", fallbackError);
+          metadata = defaultMetadata();
+        }
+      } else {
+        metadata = defaultMetadata();
+      }
     }
 
     return metadata;

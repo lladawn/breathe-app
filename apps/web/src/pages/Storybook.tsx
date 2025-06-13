@@ -100,6 +100,8 @@ export default function Storybook() {
         animation={wind}
         opacity={0.2}
         scale={3.5}
+        speed={0.8}
+        delay={1000}
       />)}
 
       {/** Play and Pause animation */}

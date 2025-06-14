@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ShareReflectionModal from "../ShareReflectionModal";
 import { trackAction } from "../../utils/umami";
+import { getRandomPastelColor } from "../../utils";
 
 const YourReflectionsSection = ({
     yourReflections,
@@ -12,6 +13,20 @@ const YourReflectionsSection = ({
     handleRawReflectionSubmit,
     submittingReflection
 }) => {
+
+    // const [tagColors, setTagColors] = useState({});
+
+    // useEffect(() => {
+    //     const newColors = { ...tagColors };
+    //     yourReflections.forEach((reflection) => {
+    //         reflection.tags.forEach((tag) => {
+    //             if (!newColors[tag]) {
+    //                 newColors[tag] = getRandomPastelColor();
+    //             }
+    //         });
+    //     });
+    //     setTagColors(newColors);
+    // }, [yourReflections]);
 
     return (
         <section id="your-reflections"
@@ -79,11 +94,22 @@ const YourReflectionsSection = ({
                             </p>
                             <div className="flex flex-wrap gap-2">
                                 {reflection.tags.map((tag) => (
+                                    // <span
+                                    //     key={tag}
+                                    //     className="bg-[#ece8e1] text-xs text-[#6e6861] px-2 py-1 rounded-full"
+                                    // >
+                                    //     {tag}
+                                    // </span>
                                     <span
                                         key={tag}
-                                        className="bg-[#ece8e1] text-xs text-[#6e6861] px-2 py-1 rounded-full"
+                                        style={{
+                                            backgroundColor: getRandomPastelColor() || "#ece8e1",
+                                            color: "#3c3a37",
+                                            boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                                        }}
+                                        className="text-xs px-2 py-1 rounded-full transition-colors"
                                     >
-                                        #{tag}
+                                        {tag}
                                     </span>
                                 ))}
                             </div>

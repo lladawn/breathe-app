@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, useRef } from "react";
 import { sendMoment } from "../../functions/api";
 import { useNavigate } from "react-router-dom";
 import { trackAction } from "../../utils/umami";
+import { getRandomPastelColor } from "../../utils";
 
 const PeerReflectionsSection = ({
     peerReflections,
@@ -135,11 +136,22 @@ const PeerReflectionsSection = ({
                                     {/* Tags */}
                                     <div className="flex flex-wrap  gap-2 mb-5">
                                         {reflection?.tags.map((tag) => (
+                                            // <span
+                                            //     key={tag}
+                                            //     className="bg-[#ece8e1] text-xs text-[#6e6861] px-2 py-1 rounded-full"
+                                            // >
+                                            //     #{tag}
+                                            // </span>
                                             <span
                                                 key={tag}
-                                                className="bg-[#ece8e1] text-xs text-[#6e6861] px-2 py-1 rounded-full"
+                                                style={{
+                                                    backgroundColor: getRandomPastelColor() || "#ece8e1",
+                                                    color: "#3c3a37",
+                                                    boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+                                                }}
+                                                className="text-xs px-2 py-1 rounded-full transition-colors"
                                             >
-                                                #{tag}
+                                                {tag}
                                             </span>
                                         ))}
                                     </div>

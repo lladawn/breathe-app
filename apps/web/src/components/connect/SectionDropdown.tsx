@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useMotionValue } from "framer-motion";
+import { trackAction } from "../../utils/umami";
 
 const sections = [
     { id: "peer-reflections", label: "Peer Reflections" },
@@ -87,7 +88,10 @@ const SectionDropdown = ({ currentSection }: { currentSection: string }) => {
                 style={{ top: y }}
             >
                 <button
-                    onClick={() => setMenuOpen(!menuOpen)}
+                    onClick={() => {
+                        trackAction("Connect - Section Menu Clicked");
+                        setMenuOpen(!menuOpen)
+                    }}
                     className="bg-[#ece8e1] rounded-r-full px-3 py-2 shadow hover:bg-[#e4dfd8] transition"
                 >
                     ☰
@@ -110,6 +114,7 @@ const SectionDropdown = ({ currentSection }: { currentSection: string }) => {
                             <li key={section.id}>
                                 <button
                                     onClick={() => {
+                                        trackAction(`Section Dropdown - ${section.label} Clicked`)
                                         navigate(`/connect?section=${section.id}`);
                                         setMenuOpen(false);
                                     }}

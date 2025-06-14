@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { createReflection } from "../functions/api";
 import ShareReflectionModal from "../components/ShareReflectionModal";
 import { reflectSystemPrompt } from "../utils/openAiPrompt";
+import { trackAction } from "../utils/umami";
 
 const ReflectChatPage = () => {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const ReflectChatPage = () => {
     );
   });
   const [input, setInput] = useState("");
+  const [hasTyped, setHasTyped] = useState(false);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [hasStarted, setHasStarted] = useState(messages.length > 1);
@@ -54,6 +56,7 @@ const ReflectChatPage = () => {
   }, [messages, loading]);
 
   const handleSend = async () => {
+    trackAction("Reflect - Send to Chat")
     if (!input.trim()) return;
     const userMessage = input.trim();
     setInput("");
@@ -68,6 +71,7 @@ const ReflectChatPage = () => {
     const finalMessages = [systemPrompt, ...newMessages.slice(-4)];
 
     const aiText = await callOpenAI(finalMessages);
+    if (aiText) trackAction("Reflect - AI Replied")
     const updatedMessages = [
       ...newMessages,
       { role: "assistant", content: aiText },
@@ -77,6 +81,7 @@ const ReflectChatPage = () => {
   };
 
   const handleStartFresh = () => {
+    trackAction("Reflect - Start Fresh")
     const freshStart = [
       {
         role: "assistant",
@@ -90,10 +95,13 @@ const ReflectChatPage = () => {
   };
 
   const handleSaveReflection = async () => {
+    trackAction("Reflect - Save Reflection")
     setSaving(true);
     const convoMessages = messages.filter((m) => m.role === "user");
     const highlight = await generateHighlight(convoMessages);
     const aiSummary = await generateDetailedSummary(convoMessages);
+
+    if (highlight && aiSummary) trackAction("Reflect - AI Reflection Saved")
 
     const newSummary = {
       date: new Date().toISOString(),
@@ -113,16 +121,19 @@ const ReflectChatPage = () => {
   };
 
   const handleShareWithPeers = async () => {
+    trackAction("Reflect - Share with Peers")
     const convoMessages = messages.filter((m) => m.role === "user");
     setShowShareModal(true);
     setLoadingMetadata(true);
     const metadata = await generateMetadataFromReflection(convoMessages);
+    trackAction("Reflect - Metadata generated")
     setReflectionMetadata(metadata);
     setLoadingMetadata(false);
     // setShowShareModal(true);
   };
 
   const handleShareSubmit = async () => {
+    trackAction("Reflect - Submit Reflection clicked")
     setSubmittingReflection(true);
     try {
       const { reflection, alias, feeling, tags } = reflectionMetadata;
@@ -135,14 +146,25 @@ const ReflectChatPage = () => {
       };
 
       await createReflection(reflectionData);
+      trackAction("Reflect - Submit Reflection success")
 
-      alert("Your reflection has been shared with peers. 🌱");
+      // alert("Your reflection has been shared with peers. 🌱");
       setSubmittingReflection(false);
       setShowShareModal(false);
       navigate("/connect?section=your-reflections"); // Navigate to Peer Room -- Your Reflections section
     } catch (error) {
       console.error("Error sharing reflection:", error);
       alert(`Failed to share reflection. Please try again.`);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setInput(value);
+
+    if (!hasTyped && value.trim() !== "") {
+      trackAction("Reflect - User started typing");
+      setHasTyped(true);
     }
   };
 
@@ -210,7 +232,7 @@ const ReflectChatPage = () => {
                 type="text"
                 placeholder="Keep sharing here, softly..."
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={(e) => handleInputChange(e)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !loading) handleSend();
                 }}
@@ -238,7 +260,7 @@ const ReflectChatPage = () => {
               type="text"
               placeholder="Share your first thought..."
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={(e) => handleInputChange(e)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !loading) handleSend();
               }}
@@ -259,7 +281,10 @@ const ReflectChatPage = () => {
       {/* Back to Storybook Button */}
       <div className="mt-6 flex justify-center">
         <button
-          onClick={() => navigate("/storybook")}
+          onClick={() => {
+            trackAction("Reflect - Back to Story");
+            navigate("/storybook");
+          }}
           className="bg-[#f1ece4] hover:bg-[#e7e2db] text-[#3c3a37] font-medium px-6 py-2 rounded-md transition shadow-sm hover:shadow-md"
         >
           👈 Take me back to the story
@@ -269,7 +294,10 @@ const ReflectChatPage = () => {
       {/* Share Modal */}
       <ShareReflectionModal
         isOpen={showShareModal}
-        onClose={() => setShowShareModal(false)}
+        onClose={() => {
+          trackAction("Share with Peers - Cancel");
+          setShowShareModal(false)
+        }}
         onSubmit={handleShareSubmit}
         submitting={submittingReflection}
         reflectionMetadata={reflectionMetadata}

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import LottieAnimation from "../components/LottieAnimation";
 import savenote from "../assets/animations/laying.json";
+import { trackAction } from "../utils/umami";
 
 const SaveNotePage = () => {
   const [title, setTitle] = useState("");
@@ -15,6 +16,7 @@ const SaveNotePage = () => {
   }, [notes]);
 
   const handleSave = () => {
+    trackAction("SaveNote - Saved");
     if (!body.trim()) return;
     const newNote = {
       date: new Date().toISOString(),
@@ -28,10 +30,33 @@ const SaveNotePage = () => {
   };
 
   const handleDelete = (index) => {
+    trackAction("SaveNote - Delete");
     if (window.confirm("Delete this note?")) {
       const updated = [...notes];
       updated.splice(index, 1);
       setNotes(updated);
+    }
+  };
+
+  const [hasTypedTitle, setHasTypedTitle] = useState(false);
+  const handleTitleInput = (e) => {
+    const value = e.target.value;
+    setTitle(value);
+
+    if (!hasTypedTitle && value.trim() !== "") {
+      trackAction("SaveNote: Typing Title");
+      setHasTypedTitle(true);
+    }
+  };
+
+  const [hasTypedBody, setHasTypedBody] = useState(false);
+  const handleBodyInput = (e) => {
+    const value = e.target.value;
+    setBody(value);
+
+    if (!hasTypedBody && value.trim() !== "") {
+      trackAction("SaveNote: Typing Body");
+      setHasTypedBody(true);
     }
   };
 
@@ -50,13 +75,13 @@ const SaveNotePage = () => {
           type="text"
           placeholder="Optional title..."
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(e) => handleTitleInput(e)}
           className="w-full border px-4 py-2 rounded"
         />
         <textarea
           placeholder="Write your thought here..."
           value={body}
-          onChange={(e) => setBody(e.target.value)}
+          onChange={(e) => handleBodyInput(e)}
           className="w-full border px-4 py-2 rounded min-h-[100px]"
         />
         <button

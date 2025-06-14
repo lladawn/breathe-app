@@ -1,5 +1,6 @@
 import React from "react";
 import ShareReflectionModal from "../ShareReflectionModal";
+import { trackAction } from "../../utils/umami";
 
 const YourReflectionsSection = ({
     yourReflections,
@@ -11,6 +12,7 @@ const YourReflectionsSection = ({
     handleRawReflectionSubmit,
     submittingReflection
 }) => {
+
     return (
         <section id="your-reflections"
             // className="flex-shrink-0 w-full max-w-xs snap-center flex flex-col items-center"
@@ -25,6 +27,7 @@ const YourReflectionsSection = ({
             </p>
             <button
                 onClick={() => {
+                    trackAction("Your Reflections - Share Raw")
                     setReflectionMetadata({
                         reflection: "",
                         alias: "",
@@ -40,7 +43,10 @@ const YourReflectionsSection = ({
 
             <ShareReflectionModal
                 isOpen={showRawReflectionModal}
-                onClose={() => setShowRawReflectionModal(false)}
+                onClose={() => {
+                    trackAction("Share Raw - Cancel")
+                    setShowRawReflectionModal(false)
+                }}
                 onSubmit={handleRawReflectionSubmit}
                 submitting={submittingReflection}
                 reflectionMetadata={reflectionMetadata}

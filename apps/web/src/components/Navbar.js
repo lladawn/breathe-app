@@ -1,6 +1,7 @@
 // components/Navbar.js
 import { Link } from "react-router-dom";
 import FloatingLeafButton from "./FloatingLeafButton";
+import { trackAction } from "../utils/umami";
 
 // import LottieAnimation from "./LottieAnimation";
 
@@ -30,12 +31,18 @@ import FloatingLeafButton from "./FloatingLeafButton";
 
 export const MobileNav = ({ menuOpen, setMenuOpen }) => {
   const handleOverlayClick = () => {
+    trackAction("Leaf Button - Clicked to Close");
     setMenuOpen(false);
   };
 
   return (
     <>
-      <FloatingLeafButton onClick={() => setMenuOpen((prev) => !prev)} />
+      <FloatingLeafButton
+        onClick={() => {
+          trackAction("Leaf Button - Menu Clicked");
+          setMenuOpen((prev) => !prev);
+        }}
+      />
 
       {/* Dark overlay */}
       {menuOpen && (
@@ -56,34 +63,79 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
         <div className="p-6">
           <div className="flex justify-end">
             <button
-              onClick={() => setMenuOpen(false)}
+              onClick={() => {
+                trackAction("Mobile Nav - Menu Closed");
+                setMenuOpen(false);
+              }}
               className="text-xl text-[#7c766f]"
             >
               ✕
             </button>
           </div>
           <nav className="mt-4 flex flex-col space-y-4 text-lg text-[#5e5a55] font-medium text-center">
-            <Link to="/" onClick={() => setMenuOpen(false)}>
+            <Link
+              to="/"
+              onClick={() => {
+                trackAction("Mobile Nav - Home Clicked");
+                setMenuOpen(false);
+              }}
+            >
               🏡 Home
             </Link>
-            <Link to="/storybook" onClick={() => setMenuOpen(false)}>
+            <Link
+              to="/storybook"
+              onClick={() => {
+                trackAction("Mobile Nav - Storybook Clicked");
+                setMenuOpen(false);
+              }}
+            >
               📖 Storybook
             </Link>
             <hr className="border-t border-black opacity-10 my-6" />
-            <Link to="/reflect" onClick={() => setMenuOpen(false)}>
+            <Link
+              to="/reflect"
+              onClick={() => {
+                trackAction("Mobile Nav - Reflect Clicked");
+                setMenuOpen(false);
+              }}
+            >
               📝 Reflect
             </Link>
-            <Link to="/archive" onClick={() => setMenuOpen(false)}>
+            <Link
+              to="/archive"
+              onClick={() => {
+                trackAction("Mobile Nav - Archive Clicked");
+                setMenuOpen(false);
+              }}
+            >
               📜 Archive
             </Link>
-            <Link to="/connect" onClick={() => setMenuOpen(false)}>
+            <Link
+              to="/connect"
+              onClick={() => {
+                trackAction("Mobile Nav - Connect Clicked");
+                setMenuOpen(false);
+              }}
+            >
               🤝 Connect
             </Link>
-            <Link to="/saveanote" onClick={() => setMenuOpen(false)}>
+            <Link
+              to="/saveanote"
+              onClick={() => {
+                trackAction("Mobile Nav - Save a Note Clicked");
+                setMenuOpen(false);
+              }}
+            >
               ✍️ Save a Note
             </Link>
             <hr className="border-t border-black opacity-10 my-6" />
-            <Link to="/heart" onClick={() => setMenuOpen(false)}>
+            <Link
+              to="/heart"
+              onClick={() => {
+                trackAction("Mobile Nav - About me Clicked");
+                setMenuOpen(false);
+              }}
+            >
               💁‍♀️ About Me
             </Link>
           </nav>
@@ -92,7 +144,10 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
             {/* Made with ☁️ by Breathe */}
             <Link
               to="/heart"
-              onClick={() => setMenuOpen(false)}
+              onClick={() => {
+                trackAction("Mobile Nav - The Open Thread Clicked");
+                setMenuOpen(false);
+              }}
               // className="underline"
               // className="italic text-[#7c766f] hover:text-[#3c3a37] transition"
             >

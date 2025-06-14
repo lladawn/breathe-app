@@ -14,6 +14,7 @@ import WalkTogetherRequestsSection from "../components/connect/WalkTogetherReque
 import SectionDropdown from "../components/connect/SectionDropdown";
 import LottieAnimation from "../components/LottieAnimation";
 import laying from "../assets/animations/laying.json"
+import { trackAction } from "../utils/umami";
 
 const sections = {
     peerReflections: "peer-reflections",
@@ -62,17 +63,21 @@ const ConnectPage: React.FC = () => {
 
     useEffect(() => {
         if (location.search.includes("your-reflections")) {
+            trackAction("Connect - Your Reflections Viewed")
             loadYourReflections();
 
         } else if (location.search.includes("moments")) {
+            trackAction("Connect - Moments Viewed")
             setLoadingMoments(true);
             fetchUserMoments()
                 .then((data) => setMoments(data))
                 .catch((error) => console.error("Failed to fetch moments:", error))
                 .finally(() => setLoadingMoments(false));
         } else if (location.search.includes("walk-together")) {
+            trackAction("Connect - Walk Together Viewed")
             return
         } else {
+            trackAction("Connect - Peer Reflections Viewed")
             if (!location.search.includes("peer-reflections"))
                 navigate({
                     pathname: "/connect",
@@ -120,6 +125,7 @@ const ConnectPage: React.FC = () => {
 
 
     const handleRawReflectionSubmit = async () => {
+        trackAction("Share Raw - Submit")
         setSubmittingReflection(true)
         try {
             const { reflection, alias, feeling, tags } = reflectionMetadata;
@@ -138,8 +144,9 @@ const ConnectPage: React.FC = () => {
             };
 
             await createReflection(reflectionData);
+            trackAction("Share Raw - Submit success")
 
-            alert("Your reflection has been shared with peers. 🌿");
+            // alert("Your reflection has been shared with peers. 🌿");
             setSubmittingReflection(false)
             setShowRawReflectionModal(false);
             navigate("/connect?section=your-reflections", { replace: true });

@@ -1,4 +1,3 @@
-import React from "react";
 import { getApproxTimeAgo } from "../../utils";
 
 const getDisplayMessage = (moment) => {

@@ -16,6 +16,13 @@ export function getApproxTimeAgo(timestamp) {
   return "A while ago";
 }
 
+export const getRandomPastelColor = () => {
+  const hue = Math.floor(Math.random() * 360);
+  const saturation = 70;
+  const lightness = 85;
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+};
+
 export function defaultMetadata() {
   return {
     reflection: "I’ve been pausing to listen to myself more.",

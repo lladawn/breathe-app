@@ -8,6 +8,7 @@ import ChapterNavMenu from "../components/ChapterNavMenu";
 import LottieAnimation from "../components/LottieAnimation";
 import fallingLeaves from "../assets/animations/falling-leaves.json";
 import wind from "../assets/animations/wind.json";
+import { trackAction } from "../utils/umami";
 // import useScrollShadows from "../hooks/useScrollShadows";
 
 // Placeholder Button
@@ -29,6 +30,7 @@ export default function Storybook() {
   const scrollRefOuter = useRef<HTMLDivElement>(null);
   // const scrollRefInner = useRef<HTMLDivElement>(null);
   const [searchParams, setSearchParams] = useSearchParams();
+  const currentParams = Object.fromEntries(searchParams.entries());
   const chapterSlug = searchParams.get("chapter");
 
   const [showAnimation, setShowAnimation] = useState(true);
@@ -57,28 +59,31 @@ export default function Storybook() {
     } else {
       if (chapter) {
         // console.log(`executes2: ${chapter?.slug}`)
-        setSearchParams({ chapter: chapter?.slug });
+        setSearchParams({ ...currentParams, chapter: chapter?.slug });
       }
     }
   }, [chapterSlug, chapters]);
 
   const next = () => {
+    trackAction(`Storybook - Turn Page clicked from ${chapters[current].title}`);
     if (current < chapters.length - 1) {
       const nextIndex = current + 1;
-      setSearchParams({ chapter: chapters[nextIndex].slug });
+      setSearchParams({ ...currentParams, chapter: chapters[nextIndex].slug });
     }
   };
 
   const back = () => {
+    trackAction(`Storybook - Go Back from ${chapters[current].title} `);
     if (current > 0) {
       const prevIndex = current - 1;
-      setSearchParams({ chapter: chapters[prevIndex].slug });
+      setSearchParams({ ...currentParams, chapter: chapters[prevIndex].slug });
     }
   };
 
   const reset = () => {
+    trackAction(`Storybook - Take to beginning clicked from ${chapters[current].title}`);
     localStorage.removeItem("breatheBookmark");
-    setSearchParams({ chapter: chapters[0].slug });
+    setSearchParams({ ...currentParams, chapter: chapters[0].slug });
   };
 
   useEffect(() => {
@@ -106,7 +111,10 @@ export default function Storybook() {
 
       {/** Play and Pause animation */}
       <button
-        onClick={() => setShowAnimation((prev) => !prev)}
+        onClick={() => {
+          trackAction("Storybook - showAnimation clicked");
+          setShowAnimation((prev) => !prev)
+        }}
         className="fixed bottom-4 right-4 z-[200] bg-white/70 backdrop-blur-md border border-[#e4dfd8] px-4 py-2 rounded-full text-sm shadow hover:bg-white transition"
       >
         {showAnimation ? "🌪 Hold the breeze" : "🍂 Let it flow"}

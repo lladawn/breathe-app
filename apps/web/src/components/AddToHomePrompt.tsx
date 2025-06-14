@@ -1,40 +1,125 @@
 import React, { useEffect, useState } from "react";
 // import QRCode from "react-qr-code";
 import BrandedQRCode from "./BrandedQrCode";
+import { trackAction } from "../utils/umami";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 const AddToHomePrompt = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
-    const [isIOS, setIsIOS] = useState(false);
+    // const [isIOS, setIsIOS] = useState(false);
     const [isDesktop, setIsDesktop] = useState(false);
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    // const location = useLocation();
+    // const isHome = location.pathname === "/" || location.pathname === "/home";
 
     useEffect(() => {
         // If the user has already dismissed the popup
         const alreadyDismissed = localStorage.getItem("breathePopupDismissed") === "true";
-        if (alreadyDismissed) return;
-
-        // detecting device type
-        const userAgent = window.navigator.userAgent.toLowerCase();
-        const mobile = /iphone|android/.test(userAgent);
-        const ios = /iphone|ipad|ipod/.test(userAgent);
-        const desktop = !mobile;
 
         const isInStandaloneMode = () =>
             window?.matchMedia('(display-mode: standalone)').matches ||
-            (window.navigator as any)?.standalone === true;
+            (window?.navigator as any)?.standalone === true;
 
-        if (isInStandaloneMode()) return; // Don’t show popup
+        if (alreadyDismissed) {
+            const userAgent = window.navigator.userAgent.toLowerCase();
+            const mobile = Boolean(/iphone|ipad|ipod|android/.test(userAgent)); // /iphone|android/.test(userAgent);
+            const desktop = !mobile;
+            if (!isInStandaloneMode()) {
+                trackAction(`ATHP - Not Installed - ${desktop ? "desktop" : mobile ? "mobile" : "unknown"}`, {
+                    device: desktop ? "desktop" : mobile ? "mobile" : "unknown",
+                });
+            }
+            return;
+        };
+        if (isInStandaloneMode()) {
+            trackAction("Add to Home Prompt - Using Installed", {
+                action: "using_installed",
+            });
+            return;
+        };
+    }, [])
 
-        setIsMobile(mobile);
-        setIsIOS(ios);
-        setIsDesktop(desktop);
+    useEffect(() => {
+        const message = searchParams.get("message");
+        let isWelcome = false;
+        if (message === "welcome") {
+            isWelcome = true
 
-        // Delay popup by a few seconds
-        const timer = setTimeout(() => setShowPopup(true), 3000);
-        return () => clearTimeout(timer);
-    }, []);
+            // If the user has already dismissed the popup
+            const alreadyDismissed = localStorage.getItem("breathePopupDismissed") === "true";
+
+            const isInStandaloneMode = () =>
+                window?.matchMedia('(display-mode: standalone)').matches ||
+                (window?.navigator as any)?.standalone === true;
+
+            // detecting device type
+            const userAgent = window.navigator.userAgent.toLowerCase();
+            const mobile = /iphone|ipad|ipod|android/.test(userAgent); // /iphone|android/.test(userAgent);
+            // const ios = /iphone|ipad|ipod/.test(userAgent);
+            const desktop = !mobile;
+
+            setIsMobile(mobile);
+            // setIsIOS(ios);
+            setIsDesktop(desktop);
+
+            // not happening
+            if (alreadyDismissed) {
+                if (!isInStandaloneMode()) {
+                    trackAction("Add to Home Prompt - Not Installed yet", {
+                        action: "is_already_dismissed",
+                        outcome: "not_installed_yet",
+                        device: isDesktop ? "desktop" : isMobile ? "mobile" : "unknown",
+                    });
+                }
+                return;
+            };
+
+            // welcome message but in installed 
+            if (isInStandaloneMode()) {
+                // trackAction("Add to Home Prompt - Using Installed", {
+                //     action: "using_installed",
+                // });
+                removeMessageParam();
+                return;
+            }; // Don’t show popup
+
+            // Delay popup by a few seconds
+            const timer = setTimeout(() => {
+                if (isWelcome) {
+                    setShowPopup(true);
+                    trackAction("Add to Home Prompt - Shown", {
+                        action: "shown",
+                        device: isDesktop ? "desktop" : isMobile ? "mobile" : "unknown",
+                    });
+                }
+                // else {
+                //     setShowPopup(true);
+                //     trackAction("Add to Home Prompt", {
+                //         action: "shown",
+                //         device: isDesktop ? "desktop" : isMobile ? "mobile" : "unknown",
+                //     });
+                // }
+            }, 3000);
+            return () => clearTimeout(timer);
+        }
+        else return;
+    }, [searchParams]);
+
+    const removeMessageParam = () => {
+        // Remove "message" from current params
+        const updatedParams = new URLSearchParams(searchParams);
+        updatedParams.delete("message");
+        setSearchParams(updatedParams);
+    }
 
     const handleClose = () => {
+        trackAction("Add to Home Prompt - Closed", {
+            action: "closed",
+            device: isDesktop ? "desktop" : isMobile ? "mobile" : "unknown",
+        });
+        removeMessageParam();
         setShowPopup(false);
         localStorage.setItem("breathePopupDismissed", "true");
     };

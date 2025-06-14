@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { trackAction } from "../utils/umami";
 
 const getRandomPastelColor = () => {
   const hue = Math.floor(Math.random() * 360);
@@ -18,6 +19,10 @@ const ShareReflectionModal = ({
 }) => {
   const [newTag, setNewTag] = useState("");
   const [tagColors, setTagColors] = useState({});
+  const [hasTypedReflection, setHasTypedReflection] = useState(false);
+  const [hasTypedAlias, setHasTypedAlias] = useState(false);
+  const [hasTypedFeeling, setHasTypedFeeling] = useState(false);
+  const [hasTypedTag, setHasTypedTag] = useState(false);
 
   useEffect(() => {
     setTagColors((prevColors) => {
@@ -53,11 +58,17 @@ const ShareReflectionModal = ({
         {/* Reflection Text */}
         <textarea
           value={reflectionMetadata.reflection}
-          onChange={(e) =>
+          onChange={(e) => {
+            const value = e.target.value;
             setReflectionMetadata((prev) => ({
               ...prev,
-              reflection: e.target.value,
+              reflection: value,
             }))
+            if (!hasTypedReflection && value.trim() !== "") {
+              trackAction("Share with Peers: Typing Reflection");
+              setHasTypedReflection(true);
+            }
+          }
           }
           rows={4}
           className="w-full border px-4 py-3 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-[#d4cec5]"
@@ -69,11 +80,17 @@ const ShareReflectionModal = ({
         <input
           type="text"
           value={reflectionMetadata.alias}
-          onChange={(e) =>
+          onChange={(e) => {
+            const value = e.target.value;
             setReflectionMetadata((prev) => ({
               ...prev,
-              alias: e.target.value,
+              alias: value,
             }))
+            if (!hasTypedAlias && value.trim() !== "") {
+              trackAction("Share with Peers: Typing Alias");
+              setHasTypedAlias(true);
+            }
+          }
           }
           className="w-full border px-4 py-2 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-[#d4cec5]"
           placeholder="Choose an alias that feels right..."
@@ -84,11 +101,17 @@ const ShareReflectionModal = ({
         <input
           type="text"
           value={reflectionMetadata.feeling}
-          onChange={(e) =>
+          onChange={(e) => {
+            const value = e.target.value;
             setReflectionMetadata((prev) => ({
               ...prev,
-              feeling: e.target.value,
+              feeling: value,
             }))
+            if (!hasTypedFeeling && value.trim() !== "") {
+              trackAction("Share with Peers: Typing Feeling");
+              setHasTypedFeeling(true);
+            }
+          }
           }
           className="w-full border px-4 py-2 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-[#d4cec5]"
           placeholder="How do you feel in one phrase?"
@@ -109,6 +132,7 @@ const ShareReflectionModal = ({
               {tag}
               <button
                 onClick={() => {
+                  trackAction("Share with Peers - Tag removed")
                   setReflectionMetadata((prev) => ({
                     ...prev,
                     tags: prev.tags.filter((t) => t !== tag),
@@ -126,7 +150,14 @@ const ShareReflectionModal = ({
         <input
           type="text"
           value={newTag}
-          onChange={(e) => setNewTag(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            setNewTag(value)
+            if (!hasTypedTag && value.trim() !== "") {
+              trackAction("Share with Peers: Typing Tag");
+              setHasTypedTag(true);
+            }
+          }}
           onKeyDown={(e) => {
             if ((e.key === "Enter" || e.key === ",") && newTag.trim() !== "") {
               e.preventDefault();

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import LottieAnimation from "../components/LottieAnimation";
 import reflect from "../assets/animations/breathe.json";
+import { trackAction } from "../utils/umami";
 
 const ArchivePage = () => {
   const [entries, setEntries] = useState([]);
@@ -31,6 +32,7 @@ const ArchivePage = () => {
   };
 
   const clearArchive = () => {
+    trackAction("Archive - Clear All");
     if (window.confirm("Are you sure you want to clear your archive?")) {
       localStorage.removeItem("breatheArchive");
       setEntries([]);
@@ -78,13 +80,19 @@ const ArchivePage = () => {
 
                 <div className="mt-3 flex justify-between text-sm">
                   <button
-                    onClick={() => exportEntry(entry)}
+                    onClick={() => {
+                      trackAction("Archive - Export");
+                      exportEntry(entry);
+                    }}
                     className="text-blue-600 hover:underline"
                   >
                     📤 Export
                   </button>
                   <button
-                    onClick={() => deleteEntry(idx)}
+                    onClick={() => {
+                      trackAction("Archive - Delete");
+                      deleteEntry(idx);
+                    }}
                     className="text-red-500 hover:underline"
                   >
                     🗑️ Delete

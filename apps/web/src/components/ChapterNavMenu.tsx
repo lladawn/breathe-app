@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getChapters } from "../utils/content";
+import { trackAction } from "../utils/umami";
 
 const ChapterNavMenu = () => {
     const navigate = useNavigate();
@@ -25,7 +26,10 @@ const ChapterNavMenu = () => {
             {/* Sticky Menu Toggle Button */}
             <div className="fixed top-1/2 left-0 transform -translate-y-1/2 z-50">
                 <button
-                    onClick={() => setMenuOpen((prev) => !prev)}
+                    onClick={() => {
+                        trackAction("ChapterNavMenu - Clicked");
+                        setMenuOpen((prev) => !prev)
+                    }}
                     className="bg-[#ece8e1] rounded-r-full px-3 py-2 shadow hover:bg-[#e4dfd8] transition"
                 >
                     ☰
@@ -42,6 +46,7 @@ const ChapterNavMenu = () => {
                             <li key={c.slug}>
                                 <button
                                     onClick={() => {
+                                        trackAction(`ChapterNavMenu - ${c.title} clicked`);
                                         navigate(`/storybook?chapter=${c.slug}`);
                                         setMenuOpen(false);
                                     }}

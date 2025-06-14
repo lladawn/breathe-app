@@ -1,4 +1,5 @@
 import { NavigateFunction } from "react-router-dom";
+import { trackAction } from "./umami";
 
 /**
  * Really need to be worked on.
@@ -18,7 +19,10 @@ Let’s start here, in this soft hush.
 Let’s see what you might hear — if you listen gently.`,
     cta: "Begin Reflecting",
     undernote: "Takes you to your first reflection.",
-    onClick: () => navigate("/reflect"),
+    onClick: () => {
+      trackAction("Storybook - Begin Reflecting clicked");
+      navigate("/reflect");
+    },
   },
   {
     id: "quiet-ache",
@@ -33,7 +37,10 @@ What would you say, if no one was judging?
 Let it spill softly here.`,
     cta: "Write a Reflection",
     undernote: "Brings you to the reflect chat.",
-    onClick: () => navigate("/reflect"),
+    onClick: () => {
+      trackAction("Storybook - Write a Reflection clicked");
+      navigate("/reflect");
+    },
   },
   {
     id: "gentle-echo",
@@ -48,7 +55,10 @@ You can reach out, if you feel moved.
 A simple warmth. A gentle “me too.”`,
     cta: "Enter Peer Room",
     undernote: "Peer reflections with warmth, relate, or walk options.",
-    onClick: () => navigate("/connect?section=peer-reflections"),
+    onClick: () => {
+      trackAction("Storybook - Enter Peer Room clicked");
+      navigate("/connect?section=peer-reflections");
+    },
   },
   {
     id: "walk-together",
@@ -64,7 +74,10 @@ When you’re ready, send the invitation.
 Let’s walk together.`,
     cta: "Send a Walk Request",
     undernote: "Connect to a fellow breather for a slow walk conversation.",
-    onClick: () => navigate("/connect?section=walk-together"),
+    onClick: () => {
+      trackAction("Storybook - Send Walk Request clicked");
+      navigate("/connect?section=walk-together");
+    },
   },
   {
     id: "letting-go",
@@ -91,7 +104,10 @@ Let what’s real rest gently inside you.
 As breathers, we let go. We learn. We keep moving—gently.`,
     cta: "Let Go",
     undernote: "Ending or archiving reflections, ephemeral moments.",
-    onClick: () => navigate("/connect?section=your-reflections"),
+    onClick: () => {
+      trackAction("Storybook - Let Go clicked");
+      navigate("/connect?section=your-reflections");
+    },
   },
   {
     id: "depth-mode",
@@ -105,6 +121,9 @@ As breathers, we let go. We learn. We keep moving—gently.`,
     cta: "Till then, try out save a note.",
     undernote:
       "Write a note just for you—a thought, a feeling—held softly, without needing to be shared.",
-    onClick: () => navigate("/saveanote"),
+    onClick: () => {
+      trackAction("Storybook - Try Save Note clicked");
+      navigate("/saveanote");
+    },
   },
 ];

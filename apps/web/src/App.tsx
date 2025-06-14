@@ -55,6 +55,10 @@ export default function App() {
           {/* About me page 👇 */}
           <Route path="/heart" element={<HeartPage />} />
           {/* <Route path="/about" element={<BreatheLandingPage />} /> */}
+
+          {/* Catch-all route for undefined paths */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+
         </Routes>
       </MainLayout>
     </Router>

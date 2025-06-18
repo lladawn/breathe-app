@@ -129,6 +129,16 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
               ✍️ Save a Note
             </Link>
             <hr className="border-t border-black opacity-10 my-6" />
+            {/* <hr className="my-2 border-t border-[#e0ddd6] opacity-100" /> */}
+            <Link
+              to="/latest-breaths"
+              onClick={() => {
+                trackAction("Mobile Nav - Breaths Clicked");
+                setMenuOpen(false);
+              }}
+            >
+              🍃 Latest Breaths
+            </Link>
             <Link
               to="/heart"
               onClick={() => {
@@ -138,6 +148,7 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
             >
               💁‍♀️ About Me
             </Link>
+            {/* <hr className="border-t border-black opacity-10 my-6" /> */}
           </nav>
 
           <div className="mt-auto pt-10 text-sm text-[#a39f97] text-center">

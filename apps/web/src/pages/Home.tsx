@@ -79,24 +79,19 @@ const HomePage = () => {
 
           {/* Scrollable Content */}
           <div
-            ref={containerRef}
-            className="
-            relative
-            bg-[#f8f4ef]
-            bg-opacity-80
-            rounded-lg
-            p-4
-            h-[45vh]
-            overflow-y-auto
-            mb-8
-            shadow-inner
-            transition-all
-          "
-            style={{
-              boxShadow: "inset 0 -20px 20px -20px rgba(0,0,0,0.1)", // subtle fade at bottom
-            }}
+            className="relative bg-[#f8f4ef] bg-opacity-80
+            rounded-lg px-4 max-h-[45vh] mb-8"
+          // shadow-inner
+          // transition-all
+          // style={{
+          //   // boxShadow: "inset 0 -20px 20px -20px rgba(0,0,0,0.1)", // subtle fade at bottom
+          // }}
           >
-            <div className="text-lg sm:text-xl leading-relaxed space-y-6">
+            <div
+              ref={containerRef}
+              className="text-lg py-4 overflow-y-auto scrollbar-hide
+                sm:text-xl leading-relaxed space-y-6 max-h-[45vh]"
+            >
               <p className="first-letter:text-5xl first-letter:font-bold first-letter:float-left first-letter:mr-2">
                 You know, I didn’t set out to build an app.
               </p>
@@ -173,7 +168,21 @@ const HomePage = () => {
                 hearts.)
               </p>
             </div>
+
+            {/* Shadow overlay at the bottom */}
+            <div className="absolute bottom-0 left-0 w-full h-10 bg-gradient-to-t from-[#f4f1eb] to-transparent pointer-events-none" />
+            {
+              !hasScrolledToEnd &&
+              <>
+                {/* Optional scroll indicator */}
+                <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-[#aaa] text-sm animate-bounce">
+                  ↓
+                </div>
+              </>
+            }
+
           </div>
+
 
           {/* CTA Button */}
           <div className="flex justify-center">

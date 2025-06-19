@@ -44,6 +44,7 @@ const ReflectChatPage = () => {
   });
   const [loadingMetadata, setLoadingMetadata] = useState(false);
   const [submittingReflection, setSubmittingReflection] = useState(false);
+  const [bounceIndex, setBounceIndex] = useState(null);
 
   const endRef = useRef(null);
 
@@ -54,6 +55,17 @@ const ReflectChatPage = () => {
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     const randomIndex = Math.floor(Math.random() * 2); // 0, 1, or 2
+  //     setBounceIndex(randomIndex);
+
+  //     setTimeout(() => setBounceIndex(null), 3000); // remove after animation
+  //   }, 3000); // 6-9s random interval
+
+  //   return () => clearInterval(interval);
+  // }, []);
 
   const handleSend = async () => {
     trackAction("Reflect - Send to Chat")
@@ -174,27 +186,41 @@ const ReflectChatPage = () => {
       <div className="flex flex-col justify-between items-center mb-4 flex-wrap gap-4">
         <ReflectHeading />
         {hasStarted && (
-          <div className="flex gap-2">
+          <div className="flex gap-2 mt-2">
             <button
               onClick={handleSaveReflection}
               disabled={saving}
-              className={`px-4 py-1 text-sm rounded-full border border-[#ddd] bg-white text-gray-600 hover:bg-[#f9f7f3] shadow-sm transition ${saving ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+              // className={`px-1 py-1 text-sm rounded-lg border border-[#ddd] bg-white text-gray-600 hover:bg-[#f9f7f3] shadow-sm transition ${saving ? "opacity-50 cursor-not-allowed" : ""
+              //   }`}
+              className={`px-2 py-1.5 text-sm rounded-md 
+                border border-[#dcd6cd] bg-[#f9f7f3] 
+                text-[#3c3a37] hover:bg-[#f0ece6] shadow-sm transition
+                ${saving ? "opacity-50 cursor-not-allowed" : ""}
+                `}
             >
-              {saving ? "Saving..." : "🌿 Save Reflection"}
+              {saving ? "Saving..." : "💾 Keep this with me"}
             </button>
             <button
               onClick={handleStartFresh}
-              className="px-4 py-1 text-sm rounded-full border border-[#ddd] bg-white text-gray-600 hover:bg-[#f9f7f3] shadow-sm transition"
+              // className="px-1 py-1 text-sm rounded-lg border border-[#ddd] bg-white text-gray-600 hover:bg-[#f9f7f3] shadow-sm transition"
+              className={`px-2 py-1.5 text-sm rounded-md 
+                border border-[#dcd6cd] bg-[#f9f7f3] 
+                text-[#3c3a37] hover:bg-[#f0ece6] shadow-sm transition
+                `}
             >
-              ✨ Start Fresh
+              🔄 Begin again, gently
             </button>
             <button
               onClick={handleShareWithPeers}
               disabled={loadingMetadata}
-              className="px-4 py-1 text-sm rounded-full border border-[#ddd] bg-white text-gray-600 hover:bg-[#f9f7f3] shadow-sm transition"
+              // className="px-1 py-1 text-sm rounded-lg border border-[#ddd] bg-white text-gray-600 hover:bg-[#f9f7f3] shadow-sm transition"
+              className={`px-2 py-1.5 text-sm rounded-md 
+                border border-[#dcd6cd] bg-[#f9f7f3] 
+                text-[#3c3a37] hover:bg-[#f0ece6] shadow-sm transition
+                `}
+            // ${bounceIndex === 1 ? "animate-breathe" : ""}
             >
-              {loadingMetadata ? "Loading metadata..." : "🌿 Share with Peers"}
+              {loadingMetadata ? "Loading metadata..." : "🤝 Offer this to someone"}
             </button>
           </div>
         )}
@@ -304,7 +330,7 @@ const ReflectChatPage = () => {
         setReflectionMetadata={setReflectionMetadata}
         loadingMetadata={loadingMetadata}
       />
-    </div>
+    </div >
   );
 };
 

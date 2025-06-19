@@ -1,4 +1,4 @@
-// components/Navbar.js
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import FloatingLeafButton from "./FloatingLeafButton";
 import { trackAction } from "../utils/umami";
@@ -30,6 +30,18 @@ import { trackAction } from "../utils/umami";
 // );
 
 export const MobileNav = ({ menuOpen, setMenuOpen }) => {
+  const [animate, setAnimate] = useState(false);
+
+  useEffect(() => {
+    if (menuOpen) {
+      setAnimate(true);
+      const timeout = setTimeout(() => {
+        setAnimate(false);
+      }, 4500); // stop after ~6 seconds
+      return () => clearTimeout(timeout);
+    }
+  }, [menuOpen]);
+
   const handleOverlayClick = () => {
     trackAction("Leaf Button - Clicked to Close");
     setMenuOpen(false);
@@ -98,6 +110,7 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
                 trackAction("Mobile Nav - Reflect Clicked");
                 setMenuOpen(false);
               }}
+              className={`${animate ? "animate-bounce" : ""}`}
             >
               📝 Reflect
             </Link>
@@ -116,6 +129,7 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
                 trackAction("Mobile Nav - Connect Clicked");
                 setMenuOpen(false);
               }}
+              // className={`${animate ? "animate-bounce" : ""}`}
             >
               🤝 Connect
             </Link>

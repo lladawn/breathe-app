@@ -1,4 +1,4 @@
-// components/Navbar.js
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import FloatingLeafButton from "./FloatingLeafButton";
 import { trackAction } from "../utils/umami";
@@ -30,6 +30,18 @@ import { trackAction } from "../utils/umami";
 // );
 
 export const MobileNav = ({ menuOpen, setMenuOpen }) => {
+  const [animate, setAnimate] = useState(false);
+
+  useEffect(() => {
+    if (menuOpen) {
+      setAnimate(true);
+      const timeout = setTimeout(() => {
+        setAnimate(false);
+      }, 4500); // stop after ~6 seconds
+      return () => clearTimeout(timeout);
+    }
+  }, [menuOpen]);
+
   const handleOverlayClick = () => {
     trackAction("Leaf Button - Clicked to Close");
     setMenuOpen(false);
@@ -98,6 +110,7 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
                 trackAction("Mobile Nav - Reflect Clicked");
                 setMenuOpen(false);
               }}
+              className={`${animate ? "animate-bounce" : ""}`}
             >
               📝 Reflect
             </Link>
@@ -116,6 +129,7 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
                 trackAction("Mobile Nav - Connect Clicked");
                 setMenuOpen(false);
               }}
+              // className={`${animate ? "animate-bounce" : ""}`}
             >
               🤝 Connect
             </Link>
@@ -129,6 +143,16 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
               ✍️ Save a Note
             </Link>
             <hr className="border-t border-black opacity-10 my-6" />
+            {/* <hr className="my-2 border-t border-[#e0ddd6] opacity-100" /> */}
+            <Link
+              to="/latest-breaths"
+              onClick={() => {
+                trackAction("Mobile Nav - Breaths Clicked");
+                setMenuOpen(false);
+              }}
+            >
+              🍃 Latest Breaths
+            </Link>
             <Link
               to="/heart"
               onClick={() => {
@@ -138,6 +162,7 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
             >
               💁‍♀️ About Me
             </Link>
+            {/* <hr className="border-t border-black opacity-10 my-6" /> */}
           </nav>
 
           <div className="mt-auto pt-10 text-sm text-[#a39f97] text-center">

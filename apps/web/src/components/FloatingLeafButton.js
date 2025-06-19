@@ -103,7 +103,7 @@ const FloatingLeafButton = ({ onClick }) => {
     >
       <button
         onClick={onClick}
-        className="w-16 h-16 flex items-center justify-center text-3xl bg-[#f8f5f0]/90 backdrop-blur-md rounded-full shadow-md transition-transform duration-300 ease-out active:scale-95 hover:scale-105 animate-breathing"
+        className="w-14 h-14 flex items-center justify-center text-3xl bg-[#f8f5f0]/90 backdrop-blur-md rounded-full shadow-md transition-transform duration-300 ease-out active:scale-95 hover:scale-105 animate-breathing"
       >
         🌿
       </button>

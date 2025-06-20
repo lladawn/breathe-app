@@ -49,7 +49,7 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
           <div className="flex justify-end">
             <button
               onClick={() => {
-                trackAction("Mobile Nav - Menu Closed");
+                trackAction("Nav - Menu Closed");
                 setMenuOpen(false);
               }}
               className="text-xl text-[#7c766f]"
@@ -61,7 +61,7 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
             <Link
               to="/"
               onClick={() => {
-                trackAction("Mobile Nav - Home Clicked");
+                trackAction("Nav - Home Clicked");
                 setMenuOpen(false);
               }}
             >
@@ -70,7 +70,7 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
             <Link
               to="/storybook"
               onClick={() => {
-                trackAction("Mobile Nav - Storybook Clicked");
+                trackAction("Nav - Storybook Clicked");
                 setMenuOpen(false);
               }}
             >
@@ -79,7 +79,7 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
             <Link
               to="/latest-breaths"
               onClick={() => {
-                trackAction("Mobile Nav - Breaths Clicked");
+                trackAction("Nav - Breaths Clicked");
                 setMenuOpen(false);
               }}
             >
@@ -89,7 +89,7 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
             <Link
               to="/reflect"
               onClick={() => {
-                trackAction("Mobile Nav - Reflect Clicked");
+                trackAction("Nav - Reflect Clicked");
                 setMenuOpen(false);
               }}
               className={`${animate ? "animate-bounce" : ""}`}
@@ -99,7 +99,7 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
             <Link
               to="/archive"
               onClick={() => {
-                trackAction("Mobile Nav - Archive Clicked");
+                trackAction("Nav - Archive Clicked");
                 setMenuOpen(false);
               }}
             >
@@ -108,7 +108,7 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
             <Link
               to="/connect"
               onClick={() => {
-                trackAction("Mobile Nav - Connect Clicked");
+                trackAction("Nav - Connect Clicked");
                 setMenuOpen(false);
               }}
             // className={`${animate ? "animate-bounce" : ""}`}
@@ -118,7 +118,7 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
             <Link
               to="/saveanote"
               onClick={() => {
-                trackAction("Mobile Nav - Save a Note Clicked");
+                trackAction("Nav - Save a Note Clicked");
                 setMenuOpen(false);
               }}
             >
@@ -130,7 +130,7 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
             <Link
               to="/heart"
               onClick={() => {
-                trackAction("Mobile Nav - About Author Clicked");
+                trackAction("Nav - About Author Clicked");
                 setMenuOpen(false);
               }}
             >
@@ -139,7 +139,7 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
             <Link
               to="/her-echoes"
               onClick={() => {
-                trackAction("Mobile Nav - Her Echoes Clicked");
+                trackAction("Nav - Her Echoes Clicked");
                 setMenuOpen(false);
               }}
             >
@@ -153,7 +153,7 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
             <Link
               to="/heart"
               onClick={() => {
-                trackAction("Mobile Nav - The Open Thread Clicked");
+                trackAction("Nav - The Open Thread Clicked");
                 setMenuOpen(false);
               }}
             // className="underline"

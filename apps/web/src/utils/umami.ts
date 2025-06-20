@@ -1,4 +1,5 @@
 export function trackAction(event: string, details?: Record<string, any>) {
+  // console.log(`Action: ${event}`);
   if (
     typeof window !== "undefined" &&
     typeof (window as any)?.umami !== "undefined"

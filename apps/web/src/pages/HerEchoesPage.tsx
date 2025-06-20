@@ -3,11 +3,21 @@ import { shuffleArray } from "../utils";
 import { echoes } from "../utils/echoes";
 import LottieAnimation from "../components/LottieAnimation";
 import animation from "../assets/animations/breathe.json"
+import { trackAction } from "../utils/umami";
+import { useScrollTracker } from "../hooks/useScrollTracker";
 
 const HerEchoesPage: React.FC = () => {
     const scrollRef = useRef<HTMLDivElement>(null);
     const [showArrow, setShowArrow] = useState(true);
     const [shuffledEchoes, setShuffledEchoes] = useState(() => shuffleArray(echoes));
+
+    useScrollTracker({
+        ref: scrollRef,
+        steps: [10, 30, 50, 100],
+        onStepReached: (step) => {
+            trackAction(`Echoes - Scrolled ${step}%`)
+        }
+    })
 
     // useEffect(() => {
     //     setShuffledEchoes(shuffleArray(echoes));
@@ -22,6 +32,7 @@ const HerEchoesPage: React.FC = () => {
     };
 
     const handleScrollRight = () => {
+        trackAction("Echoes — Arrow Clicked");
         if (scrollRef.current) {
             scrollRef.current.scrollBy({
                 left: scrollRef.current.offsetWidth,
@@ -44,7 +55,7 @@ const HerEchoesPage: React.FC = () => {
         <>
             <LottieAnimation animation={animation} opacity={0.2} scale={2} />
             <div className="px-4 py-10 relative overflow-hidden">
-                <h2 className="text-2xl font-serif text-center text-[#3c3a37] mb-2 gap-1 flex justify-center items-center">
+                <h2 className="text-3xl font-serif text-center text-[#3c3a37] mb-2 gap-1 flex justify-center items-center">
                     <span className="font-semibold">Her Echoes 🫶 </span>
                     {/* <span className="text-sm italic font text-base text-[#777]"> What They Felt 🤍</span> */}
                 </h2>
@@ -70,6 +81,7 @@ const HerEchoesPage: React.FC = () => {
                                     href={echo.link}
                                     target="_blank"
                                     rel="noopener noreferrer"
+                                    onClick={() => trackAction(`Echoes — Clicked: ${echo.author.slice(2, 8)}`)}
                                     className="text-sm text-[#3c3a37] underline hover:text-[#1f1d1a]"
                                 >
                                     Read on Substack →

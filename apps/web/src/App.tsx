@@ -20,6 +20,7 @@ import ConnectPage from "./pages/Connect";
 import { v4 as uuidv4 } from "uuid";
 import AddToHomePrompt from "./components/AddToHomePrompt";
 import LatestBreathsPage from "./pages/LatestBreathsPage";
+import HerEchoesPage from "./pages/HerEchoesPage";
 
 // import fallingLeaves from "./assets/animations/falling-leaves.json";
 
@@ -55,6 +56,7 @@ export default function App() {
 
           {/* About me page 👇 */}
           <Route path="/heart" element={<HeartPage />} />
+          <Route path="/her-echoes" element={<HerEchoesPage />} />
           <Route path="/latest-breaths" element={<LatestBreathsPage />} />
           {/* <Route path="/about" element={<BreatheLandingPage />} /> */}
 

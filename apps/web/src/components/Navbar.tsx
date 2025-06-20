@@ -3,32 +3,6 @@ import { Link } from "react-router-dom";
 import FloatingLeafButton from "./FloatingLeafButton";
 import { trackAction } from "../utils/umami";
 
-// import LottieAnimation from "./LottieAnimation";
-
-// export const DesktopNav = () => (
-//   <div
-//     // className="hidden md:flex justify-center gap-10 text-[#5e5a55]
-//     // absolute top-6 left-1/2
-//     // transform -translate-x-1/2 z-20 text-sm font-medium"
-//     className="flex items-center justify-center gap-10 text-[#5e5a55]
-//     text-sm font-medium mt-6"
-//   >
-//     {/* <div className="hidden md:flex fixed gap-10 top-0 left-1/2 transform -translate-x-1/2 z-40 bg-[#f8f5f0]/70 backdrop-blur-md px-6 py-3 rounded-b-xl shadow-md"> */}{" "}
-//     <Link to="/" className="hover:text-[#3c3a37] transition">
-//       Home
-//     </Link>
-//     <Link to="/reflect" className="hover:text-[#3c3a37] transition">
-//       Reflect
-//     </Link>
-//     <Link to="/archive" className="hover:text-[#3c3a37] transition">
-//       Archive
-//     </Link>
-//     <Link to="/connect" className="hover:text-[#3c3a37] transition">
-//       Connect
-//     </Link>
-//   </div>
-// );
-
 export const MobileNav = ({ menuOpen, setMenuOpen }) => {
   const [animate, setAnimate] = useState(false);
 
@@ -68,9 +42,8 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
       <div
         className={`fixed bottom-0 left-0 w-full bg-white rounded-t-3xl shadow-2xl 
         transition-transform duration-300 ease-in-out z-50 
-        bg-gradient-to-br from-[#f0ede7] via-[#e8e4de] to-[#f7f4ef] ${
-          menuOpen ? "translate-y-0" : "translate-y-full"
-        }`}
+        bg-gradient-to-br from-[#f0ede7] via-[#e8e4de] to-[#f7f4ef] ${menuOpen ? "translate-y-0" : "translate-y-full"
+          }`}
       >
         <div className="p-6">
           <div className="flex justify-end">
@@ -103,6 +76,15 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
             >
               📖 Storybook
             </Link>
+            <Link
+              to="/latest-breaths"
+              onClick={() => {
+                trackAction("Mobile Nav - Breaths Clicked");
+                setMenuOpen(false);
+              }}
+            >
+              🍃 Latest Breaths
+            </Link>
             <hr className="border-t border-black opacity-10 my-6" />
             <Link
               to="/reflect"
@@ -129,7 +111,7 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
                 trackAction("Mobile Nav - Connect Clicked");
                 setMenuOpen(false);
               }}
-              // className={`${animate ? "animate-bounce" : ""}`}
+            // className={`${animate ? "animate-bounce" : ""}`}
             >
               🤝 Connect
             </Link>
@@ -144,23 +126,24 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
             </Link>
             <hr className="border-t border-black opacity-10 my-6" />
             {/* <hr className="my-2 border-t border-[#e0ddd6] opacity-100" /> */}
-            <Link
-              to="/latest-breaths"
-              onClick={() => {
-                trackAction("Mobile Nav - Breaths Clicked");
-                setMenuOpen(false);
-              }}
-            >
-              🍃 Latest Breaths
-            </Link>
+
             <Link
               to="/heart"
               onClick={() => {
-                trackAction("Mobile Nav - About me Clicked");
+                trackAction("Mobile Nav - About Author Clicked");
                 setMenuOpen(false);
               }}
             >
-              💁‍♀️ About Me
+              👩‍🦰 About the Author
+            </Link>
+            <Link
+              to="/her-echoes"
+              onClick={() => {
+                trackAction("Mobile Nav - Her Echoes Clicked");
+                setMenuOpen(false);
+              }}
+            >
+              💛 Her Echoes
             </Link>
             {/* <hr className="border-t border-black opacity-10 my-6" /> */}
           </nav>
@@ -173,8 +156,8 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
                 trackAction("Mobile Nav - The Open Thread Clicked");
                 setMenuOpen(false);
               }}
-              // className="underline"
-              // className="italic text-[#7c766f] hover:text-[#3c3a37] transition"
+            // className="underline"
+            // className="italic text-[#7c766f] hover:text-[#3c3a37] transition"
             >
               Made with 🤍 by
               <span className="italic"> </span>
@@ -186,3 +169,28 @@ export const MobileNav = ({ menuOpen, setMenuOpen }) => {
     </>
   );
 };
+
+
+// export const DesktopNav = () => (
+//   <div
+//     // className="hidden md:flex justify-center gap-10 text-[#5e5a55]
+//     // absolute top-6 left-1/2
+//     // transform -translate-x-1/2 z-20 text-sm font-medium"
+//     className="flex items-center justify-center gap-10 text-[#5e5a55]
+//     text-sm font-medium mt-6"
+//   >
+//     {/* <div className="hidden md:flex fixed gap-10 top-0 left-1/2 transform -translate-x-1/2 z-40 bg-[#f8f5f0]/70 backdrop-blur-md px-6 py-3 rounded-b-xl shadow-md"> */}{" "}
+//     <Link to="/" className="hover:text-[#3c3a37] transition">
+//       Home
+//     </Link>
+//     <Link to="/reflect" className="hover:text-[#3c3a37] transition">
+//       Reflect
+//     </Link>
+//     <Link to="/archive" className="hover:text-[#3c3a37] transition">
+//       Archive
+//     </Link>
+//     <Link to="/connect" className="hover:text-[#3c3a37] transition">
+//       Connect
+//     </Link>
+//   </div>
+// );

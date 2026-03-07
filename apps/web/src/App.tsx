@@ -17,6 +17,7 @@ import HeartPage from "./pages/HeartPage.js";
 import Storybook from "./pages/Storybook";
 import HomePage from "./pages/Home";
 import ConnectPage from "./pages/Connect";
+import WalkRoom from "./components/connect/WalkRoom";
 import { v4 as uuidv4 } from "uuid";
 import AddToHomePrompt from "./components/AddToHomePrompt";
 import LatestBreathsPage from "./pages/LatestBreathsPage";
@@ -53,6 +54,7 @@ export default function App() {
           <Route path="/connect-soon" element={<ConnectSoonPage />} />
           <Route path="/connect" element={<ConnectPage />} />
           <Route path="/saveanote" element={<SaveNotePage />} />
+          <Route path="/walk/:roomId" element={<WalkRoom />} />
 
           {/* About me page 👇 */}
           <Route path="/heart" element={<HeartPage />} />

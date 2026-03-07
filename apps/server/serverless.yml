@@ -14,6 +14,8 @@ provider:
     MONGODB_URI: ${env:MONGODB_URI}
     MONGODB_USERNAME: ${env:MONGODB_USERNAME}
     MONGODB_PWD: ${env:MONGODB_PWD}
+    STREAM_API_KEY: ${env:STREAM_API_KEY}
+    STREAM_SECRET: ${env:STREAM_SECRET}
   # remove dynamo db for now
   # iamRoleStatements:
   #   - Effect: "Allow"
@@ -58,28 +60,55 @@ functions:
           path: moments
           method: get
           cors: true
-  createWalkTogetherRequest:
-    handler: src/handlers/createWalkTogetherRequest.handler
+  sendWalkRequest:
+    handler: src/handlers/sendWalkRequest.handler
     events:
       - http:
           path: walk-together
           method: post
           cors: true
-  getWalkTogetherRequests:
-    handler: src/handlers/getWalkTogetherRequests.handler
+  getWalkRequests:
+    handler: src/handlers/getWalkRequests.handler
     events:
       - http:
           path: walk-requests
           method: get
           cors: true
-  # respondToWalkTogetherRequest:
-  #   handler: src/handlers/respondToWalkTogetherRequest.handler
-  #   events:
-  #     - http:
-  #         path: walk-response
-  #         method: post
-  #         cors: true
-  
+  acceptWalkRequest:
+    handler: src/handlers/acceptWalkRequest.handler
+    events:
+      - http:
+          path: walk-accept
+          method: post
+          cors: true
+  declineWalkRequest:
+    handler: src/handlers/declineWalkRequest.handler
+    events:
+      - http:
+          path: walk-decline
+          method: post
+          cors: true
+  getWalkRooms:
+    handler: src/handlers/getWalkRooms.handler
+    events:
+      - http:
+          path: walk-rooms
+          method: get
+          cors: true
+  getChatToken:
+    handler: src/handlers/getChatToken.handler
+    events:
+      - http:
+          path: chat-token
+          method: get
+          cors: true
+  leaveWalkRoom:
+    handler: src/handlers/leaveWalkRoom.handler
+    events:
+      - http:
+          path: walk-leave
+          method: post
+          cors: true
 
 plugins:
   - serverless-esbuild

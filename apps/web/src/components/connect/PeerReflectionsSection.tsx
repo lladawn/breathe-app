@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, useRef } from "react";
-import { sendMoment } from "../../functions/api";
+import { sendMoment, sendWalkRequest } from "../../functions/api";
 import { useNavigate } from "react-router-dom";
 import { trackAction } from "../../utils/umami";
 import { getRandomPastelColor } from "../../utils";
@@ -17,6 +17,11 @@ const PeerReflectionsSection = ({
     const [sendingMoment, setSendingMoment] = useState(false)
     const [momentType, setMomentType] = useState("");
     const [hasTypedMessage, setHasTypedMessage] = useState(false)
+
+    const [showWalkModal, setShowWalkModal] = useState(false);
+    const [selectedWalkReflection, setSelectedWalkReflection] = useState(null);
+    const [walkMessage, setWalkMessage] = useState("");
+    const [sendingWalkRequest, setSendingWalkRequest] = useState(false);
 
     const scrollContainerRef = useRef(null);
 
@@ -52,6 +57,42 @@ const PeerReflectionsSection = ({
         } catch (error) {
             trackAction(`Error - Moment ${momentType} - Sent`)
             alert("Failed to send moment. Please try again.");
+        }
+    };
+
+    const handleSendWalkRequest = async (reflection, message = "") => {
+        if (!reflection) return;
+
+        const senderId = localStorage.getItem("breatheUserId");
+        if (!senderId) {
+            alert("Please sign in to send a walk request.");
+            return;
+        }
+
+        setSendingWalkRequest(true);
+        trackAction("Walk Together - Request Sending");
+
+        try {
+            const receiverId = reflection.userId;
+            const reflectionId = reflection.id;
+
+            await sendWalkRequest({
+                senderId,
+                receiverId,
+                reflectionId,
+                message,
+            });
+
+            trackAction("Walk Together - Request Sent");
+            setShowWalkModal(false);
+            setWalkMessage("");
+            setSelectedWalkReflection(null);
+            navigate("/connect?section=walk-together", { replace: true });
+        } catch (error) {
+            trackAction("Walk Together - Request Error");
+            alert(`${error?.response?.data?.error || "Failed to send walk request. Please try again."}`);
+        } finally {
+            setSendingWalkRequest(false);
         }
     };
 
@@ -182,6 +223,17 @@ const PeerReflectionsSection = ({
                                         >
                                             💛 Send Warmth
                                         </button>
+                                        <button
+                                            onClick={() => {
+                                                trackAction("Peer Reflections - 🌿 Walk Together");
+                                                setSelectedWalkReflection(reflection);
+                                                setWalkMessage("");
+                                                setShowWalkModal(true);
+                                            }}
+                                            className="bg-[#ece8e1] hover:bg-[#e4dfd8] text-sm px-4 py-1 rounded-full shadow-sm transition"
+                                        >
+                                            🌿 Walk Together
+                                        </button>
                                     </div>
                                 </div>
                             )
@@ -228,6 +280,47 @@ const PeerReflectionsSection = ({
                                     className="px-4 py-2 text-sm rounded bg-[#ece8e1] hover:bg-[#e4dfd8] transition"
                                 >
                                     {sendingMoment ? "Sending..." : "Send"}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Walk Together Modal */}
+                {showWalkModal && (
+                    <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+                        <div className="bg-white rounded-lg p-6 max-w-md w-full shadow-lg">
+                            <h2 className="text-xl font-semibold mb-4 text-center">
+                                🌿 Walk Together
+                            </h2>
+                            <p className="text-sm text-gray-600 mb-4 text-center">
+                                Send a walk request to the author of this reflection.
+                            </p>
+                            <textarea
+                                value={walkMessage}
+                                onChange={(e) => setWalkMessage(e.target.value)}
+                                rows={3}
+                                className="w-full border px-3 py-2 rounded mb-4"
+                                placeholder="Write an optional message..."
+                            />
+                            <div className="flex justify-end gap-2">
+                                <button
+                                    onClick={() => {
+                                        setShowWalkModal(false);
+                                        setSelectedWalkReflection(null);
+                                    }}
+                                    className="px-4 py-2 text-sm rounded bg-gray-200 hover:bg-gray-300 transition"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        handleSendWalkRequest(selectedWalkReflection, walkMessage);
+                                    }}
+                                    disabled={sendingWalkRequest}
+                                    className="px-4 py-2 text-sm rounded bg-[#ece8e1] hover:bg-[#e4dfd8] transition"
+                                >
+                                    {sendingWalkRequest ? "Sending..." : "Send Walk Request"}
                                 </button>
                             </div>
                         </div>

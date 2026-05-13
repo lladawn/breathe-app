@@ -17,6 +17,7 @@ provider:
     STREAM_API_KEY: ${env:STREAM_API_KEY}
     STREAM_SECRET: ${env:STREAM_SECRET}
     OPENAI_API_KEY: ${env:OPENAI_API_KEY}
+
   # remove dynamo db for now
   # iamRoleStatements:
   #   - Effect: "Allow"

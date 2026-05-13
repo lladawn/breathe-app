@@ -286,3 +286,4 @@ export const leaveWalkRoom = async (roomId: string) => {
     throw error;
   }
 };
+

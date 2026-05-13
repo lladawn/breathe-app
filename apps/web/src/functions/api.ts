@@ -6,6 +6,34 @@ const API_BASE_URL =
   // "http://192.168.31.213:8000/dev"; // adjust for production later
   // "http://0.0.0.0:8000/dev";
   "https://hbvb7csq5g.execute-api.ap-south-1.amazonaws.com/dev";
+
+type ReflectionAiTask = "chat" | "highlight" | "detailedSummary" | "metadata";
+
+type ReflectionAiMessage = {
+  role: "system" | "user" | "assistant";
+  content: string;
+};
+
+export const generateReflectionAi = async (
+  task: ReflectionAiTask,
+  messages: ReflectionAiMessage[]
+) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/ai/reflection`,
+      { task, messages },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error generating reflection AI response:", error);
+    throw error;
+  }
+};
 /**
  * Create a new reflection.
  */

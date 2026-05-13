@@ -8,7 +8,7 @@ useDotenv: true  # ✅ This ensures .env is loaded early
 
 provider:
   name: aws
-  runtime: nodejs18.x
+  runtime: nodejs20.x
   region: ap-south-1 # or your preferred region
   environment:
     MONGODB_URI: ${env:MONGODB_URI}
@@ -16,6 +16,8 @@ provider:
     MONGODB_PWD: ${env:MONGODB_PWD}
     STREAM_API_KEY: ${env:STREAM_API_KEY}
     STREAM_SECRET: ${env:STREAM_SECRET}
+    OPENAI_API_KEY: ${env:OPENAI_API_KEY}
+
   # remove dynamo db for now
   # iamRoleStatements:
   #   - Effect: "Allow"
@@ -109,6 +111,13 @@ functions:
           path: walk-leave
           method: post
           cors: true
+  openAiReflection:
+    handler: src/handlers/openAiReflection.handler
+    events:
+      - http:
+          path: ai/reflection
+          method: post
+          cors: true
 
 plugins:
   - serverless-esbuild
@@ -120,7 +129,7 @@ custom:
     bundle: true
     minify: false
     sourcemap: true
-    target: node18
+    target: node20
     platform: node
     concurrency: 10
     watch:
